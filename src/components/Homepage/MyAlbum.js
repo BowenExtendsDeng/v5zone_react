@@ -1,6 +1,7 @@
 import React from 'react';
 import {JudgeDevice} from "../templates/JudgeDevice";
 import copy from 'copy-to-clipboard';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 
 import {
     Box,
@@ -95,6 +96,11 @@ function Image(props){
     )
 }
 function MyAlbum() {
+    const fileInputChange = (event) => {
+        const fileData = event.target.files[0];
+        alert(fileData.name)
+    }
+
     const isDesktop = JudgeDevice()
 
     const imageList = [
@@ -130,6 +136,23 @@ function MyAlbum() {
                     }}
                 >我的图床</Typography>
             }
+            <Button
+                variant="contained"
+                component="label"
+                sx={{
+                    margin: 1,
+                    position: "absolute",
+                    right: 20,
+                }}
+            >
+                Upload<DriveFolderUploadIcon/>
+                <input
+                    hidden accept="image/*"
+                    multiple type="file"
+                    onChange={fileInputChange}
+                />
+            </Button>
+            <Box sx={{height: 50}}/>
             {isDesktop?
                 <Box>
                     <Grid container spacing={2}>

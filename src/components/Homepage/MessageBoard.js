@@ -1,6 +1,17 @@
 import React from 'react';
 import {JudgeDevice} from "../templates/JudgeDevice";
-import {Box, Button, CardContent, Grid, Stack, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    CardContent,
+    Dialog, DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grid, MenuItem,
+    Stack, TextField,
+    Typography
+} from "@mui/material";
 
 
 function Message(props) {
@@ -27,6 +38,20 @@ function Message(props) {
 
 function MessageBoard() {
     const isDesktop = JudgeDevice()
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleApply = () => {
+        setOpen(false);
+    };
 
     const messages = [
         {
@@ -60,7 +85,37 @@ function MessageBoard() {
                     }}
                 >Zone 留言板</Typography>
             }
-            <Button variant="contained" sx={{margin:3, textAlign:"right"}}>新建留言</Button>
+            <Button
+                variant="contained"
+                onClick={handleClickOpen}
+                sx={{
+                margin: 3,
+                position: "absolute",
+                right: 20,
+            }}>新建留言</Button>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                sx={{
+                }}
+            >
+                <DialogTitle>新建留言</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="你的留言"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} sx={{fontSize:16,marginRight:3, marginBottom: 3}}>取消</Button>
+                    <Button onClick={handleApply} sx={{fontSize:16,marginRight:5, marginBottom: 3}}>发布</Button>
+                </DialogActions>
+            </Dialog>
+            <Box sx={{height: 50}}/>
             {isDesktop ?
                 <Box>
                     <Grid container spacing={2}>
