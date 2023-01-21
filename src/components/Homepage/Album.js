@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Box, ImageList, ImageListItem, ImageListItemBar, Typography} from "@mui/material";
+import {Box, ImageList, ImageListItem, Typography} from "@mui/material";
 import {JudgeDevice} from "../templates/JudgeDevice";
 
 export default function ColorTabs() {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Alert,
     Box,
@@ -15,6 +15,27 @@ import {
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 
+function CountDown(props) {
+    const { mss } = props;
+
+    const [time, setTime] = useState(mss);
+
+    useEffect(() => {
+        const tick = setInterval(() => {
+            setTime(time - 1);
+        }, 1000);
+
+        console.log("tick", tick);
+
+        return () => clearInterval(tick);
+    });
+
+    return (
+        <Typography sx={{
+            fontSize:14,
+        }}>{time.toString().padStart(2, "0")}</Typography>
+    );
+}
 function LoginForm() {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordAgain, setShowPasswordAgain] = React.useState(false);
@@ -110,16 +131,28 @@ function LoginForm() {
                             width: 200
                         }}
                     />
-                    <Button
-                        sx={{
-                            margin: 3,
-                            textAlign: "center",
-                            marginTop: 4
-                        }}
-                        disabled={sendButtonState}
-                        variant="contained"
-                        onClick={onClickSend}
-                    >{sendButtonState ? "30S后再发送" : "发送验证码" }</Button>
+                    {sendButtonState ?
+                        <Button
+                            sx={{
+                                margin: 3,
+                                textAlign: "center",
+                                marginTop: 4
+                            }}
+                            disabled="true"
+                            variant="contained"
+                            onClick={onClickSend}
+                        ><CountDown mss={30}/>s后再试</Button>
+                        :
+                        <Button
+                            sx={{
+                                margin: 3,
+                                textAlign: "center",
+                                marginTop: 4
+                            }}
+                            variant="contained"
+                            onClick={onClickSend}
+                        >发送验证码</Button>
+                    }
                     <Snackbar
                         open={open}
                         autoHideDuration={6000}
@@ -130,7 +163,6 @@ function LoginForm() {
                         </Alert>
                     </Snackbar>
                 </Box>
-
                 <FormControl
                     required={true}
                     sx={{

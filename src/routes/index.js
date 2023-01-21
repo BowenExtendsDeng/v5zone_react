@@ -24,7 +24,7 @@ export default [
                 element: <Manage/>
             },
             {
-                path: 'check_board',
+                path: '',
                 element: <CheckBoard/>
             },
             {

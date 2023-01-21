@@ -4,7 +4,7 @@ import {
     Box,
     Button, Divider,
     FormControl, Grid, IconButton, InputAdornment,
-    InputLabel, ListItem, ListItemButton, ListItemIcon, ListItemText,
+    InputLabel,
     OutlinedInput,
     Stack,
     Typography
@@ -12,6 +12,68 @@ import {
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {useNavigate} from "react-router-dom";
+import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
+
+function Retire(){
+    return(
+        <Box>
+            <Box>
+                <Typography
+                    sx={{
+                        margin: 3,
+                        fontFamily: "黑体",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                    }}
+                >
+                    从 V5 退役
+                </Typography>
+                <Button
+                    sx={{
+                        margin:2,
+                        textAlign: "center",
+                        backgroundColor:"#e88b8b"
+                    }}
+                    variant="contained"
+                    onClick={() => {
+                        alert('bye')
+                    }}>
+                    退役<AccessibleForwardIcon/>
+                </Button>
+            </Box>
+        </Box>
+    )
+}
+
+function SetProfile(){
+    return(
+        <Box>
+            <Box>
+                <Typography
+                    sx={{
+                        margin: 3,
+                        fontFamily: "黑体",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                    }}
+                >
+                    查看个人资料
+                </Typography>
+                <Button
+                    sx={{
+                        margin:2,
+                        textAlign: "center",
+                    }}
+                    variant="contained"
+                    onClick={() => {
+                        alert('bye')
+                    }}>
+                    查看个人资料
+                </Button>
+            </Box>
+        </Box>
+    )
+}
 function ResetPassword(){
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordAgain, setShowPasswordAgain] = React.useState(false);
@@ -131,7 +193,6 @@ function Logout(){
                 退出登录<LogoutIcon/>
             </Button>
         </Box>
-
     )
 }
 
@@ -154,17 +215,35 @@ function Settings() {
             }
             {isDesktop ?
                 <Grid container spacing={2} align={"center"}>
+                    <Grid xs={3}></Grid>
                     <Grid xs={6} align={"center"}>
                         <ResetPassword/>
                     </Grid>
+                    <Grid xs={3}></Grid>
+                    <Grid xs={3}></Grid>
+                    <Grid xs={6} align={"center"}>
+                        <SetProfile/>
+                    </Grid>
+                    <Grid xs={3}></Grid>
+                    <Grid xs={3}></Grid>
+                    <Grid xs={6} align={"center"}>
+                        <Retire/>
+                    </Grid>
+                    <Grid xs={3}></Grid>
+                    <Grid xs={3}></Grid>
                     <Grid xs={6} align={"center"}>
                         <Logout/>
                     </Grid>
+                    <Grid xs={3}></Grid>
                 </Grid>
                 :
                 <Stack align={"center"}>
                     <Divider/>
                     <ResetPassword/>
+                    <Divider/>
+                    <SetProfile/>
+                    <Divider/>
+                    <Retire/>
                     <Divider/>
                     <Logout/>
                 </Stack>

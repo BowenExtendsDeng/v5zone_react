@@ -14,10 +14,8 @@ import {
     Toolbar,
     Typography,
 } from "@mui/material";
-import LogoutIcon from '@mui/icons-material/Logout';
 import TaskIcon from '@mui/icons-material/Task';
 import PhoneIcon from '@mui/icons-material/Phone';
-import MoneyIcon from '@mui/icons-material/Money';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -38,8 +36,6 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 const drawerWidth = 240;
 
 function Homepage() {
-    const [open, setOpen] = React.useState(true);
-
 
     const [showDraw, setShowDraw] = React.useState(false);
 
@@ -248,7 +244,7 @@ function Homepage() {
                         <ListItem key={'公告栏'} disablePadding>
                             <ListItemButton
                                 onClick={() => {
-                                    navigate('/homepage/check_board');
+                                    navigate('/homepage/');
                                     handleDrawerClose();
                                 }}
                             >
