@@ -13,11 +13,17 @@ import {
 } from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {post} from "../../request";
 
 function LoginForm() {
     const [showPassword, setShowPassword] = React.useState(false);
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
 
     const navigate = useNavigate()
+
+    const handleUsernameChange = (event) => setUsername(event.target.value);
+    const handlePasswordChange = (event) => setPassword(event.target.value);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
@@ -25,7 +31,13 @@ function LoginForm() {
     };
 
     const onClickYes = () =>{
-        navigate('/homepage')
+        let data = new FormData();
+        data.append("id" , username);
+        data.append("password", password);
+        post("/auth/authenticate", data).then(res=>{
+            console.log(res)
+        })
+        //navigate('/homepage')
     }
 
     return (
@@ -70,6 +82,8 @@ function LoginForm() {
                         margin: 3,
                         height: 40
                     }}
+                    value={username}
+                    onChange={handleUsernameChange}
                 />
                 <FormControl
                     required={true}
@@ -93,6 +107,8 @@ function LoginForm() {
                             </InputAdornment>
                         }
                         label="密码"
+                        value={password}
+                        onChange={handlePasswordChange}
                     />
                 </FormControl>
                 <Box
