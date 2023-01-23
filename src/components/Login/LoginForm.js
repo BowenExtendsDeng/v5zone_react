@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Alert,
     Box,
     Button, Checkbox,
     FormControl, FormControlLabel,
@@ -31,13 +32,20 @@ function LoginForm() {
     };
 
     const onClickYes = () =>{
-        let data = new FormData();
-        data.append("id" , username);
-        data.append("password", password);
-        post("/auth/authenticate", data).then(res=>{
-            console.log(res)
-        })
-        //navigate('/homepage')
+        const data = {
+            "id":username,
+            "password":password
+        }
+
+        const res = post("/auth/authenticate", data).then((res=>{
+            console.log("res2");
+            console.log(res);
+            if(res.status === 200){
+                navigate("/homepage");
+            }else {
+                alert("用户名或密码错误");
+            }
+        }));
     }
 
     return (

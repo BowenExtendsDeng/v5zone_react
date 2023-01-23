@@ -21,19 +21,24 @@ axios.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
-/**
- * http response 拦截器
- */
 axios.interceptors.response.use(
     (response) => {
         if (response.data.errCode === 2) {
             console.log("过期");
         }
+        console.log(response)
+        if(response.data.token !== ""){
+            localStorage.setItem('v5_token', response.data.token)
+            console.log(response.data.token);
+        }
+        if(response.data.id !== ""){
+            localStorage.setItem('v5_id', response.data.id)
+            console.log(response.data.id);
+        }
         return response;
     },
     (error) => {
-        console.log("请求出错：", error);
+        console.log(error)
     }
 );
 
@@ -63,13 +68,14 @@ export function get(url, params = {}) {
  * @param data
  * @returns {Promise}
  */
-
 export function post(url, data) {
     return new Promise((resolve, reject) => {
+        const token = localStorage.getItem("v5_token")
+        console.log("v5_token: " + token)
         axios.post(url, data).then(
             (response) => {
                 //关闭进度条
-                resolve(response.data);
+                resolve(response);
             },
             (err) => {
                 reject(err);

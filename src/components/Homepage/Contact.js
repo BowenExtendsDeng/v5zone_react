@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Box,
     MenuItem,
@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import {JudgeDevice} from "../templates/JudgeDevice";
+import axios from "axios";
+import {post} from "../../request";
 
 function Contact() {
     const isDesktop = JudgeDevice();
@@ -62,14 +64,16 @@ function Contact() {
         },
     ];
 
-    function createData(name, session, college, techTeam, home, telephone, email, qq) {
-        return {name, session, college, techTeam, home, telephone, email, qq};
-    }
 
-    const rows = [
-        createData('张三', 2020, "计算机学院", "软件组", "陕西西安",
-            "13052949395", "npu5v5@nwpu.edu.cn", "1093801923"),
-    ];
+    const rows = post("/member/contact",
+        localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                return res.data.contactInfo;
+            }
+    });
+
+
 
     return (
         <Box>
