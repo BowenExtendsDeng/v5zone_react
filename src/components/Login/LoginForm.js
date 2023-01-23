@@ -41,6 +41,10 @@ function LoginForm() {
             console.log("res2");
             console.log(res);
             if(res.status === 200){
+                localStorage.setItem('v5_token', res.data.token)
+                console.log(res.data.token);
+                localStorage.setItem('v5_id', res.data.id)
+                console.log(res.data.id);
                 navigate("/homepage");
             }else {
                 alert("用户名或密码错误");

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
     Box,
     MenuItem,
@@ -9,15 +9,18 @@ import {
     TableHead,
     TableRow,
     TextField,
-    Typography
+    Typography,
 } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import {JudgeDevice} from "../templates/JudgeDevice";
-import axios from "axios";
 import {post} from "../../request";
 
 function Contact() {
     const isDesktop = JudgeDevice();
+    const [renderRows, setRenderRows] = useState([]);
+    const [methodState, setMethodState] = useState("全部");
+    const [schoolState, setSchoolState] = useState("全部");
+    const [techGroupState, setTechGroupState] = useState("全部");
 
     const method = [
         {
@@ -64,16 +67,27 @@ function Contact() {
         },
     ];
 
-
-    const rows = post("/member/contact",
-        localStorage.getItem("v5_id")).then(res => {
+    useEffect(()=>{
+        post("/member/contact",
+            localStorage.getItem("v5_id")).then(res => {
             console.log(res);
             if (res.status === 200){
-                return res.data.contactInfo;
+                setRenderRows(res.data.contactInfo);
             }
-    });
+        })
+    },[])
 
+    const onTechGroupChanged = (event) => {
+        setTechGroupState(event.target.value);
+    }
 
+    const onSchoolChanged = (event) => {
+        setSchoolState(event.target.value);
+    }
+
+    const onMethodChanged = (event) => {
+        setMethodState(event.target.value);
+    }
 
     return (
         <Box>
@@ -100,6 +114,8 @@ function Contact() {
                         margin: 2,
                         width: 100,
                     }}
+                    value={methodState}
+                    onChange={onMethodChanged}
                 >
                     {method.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -117,6 +133,8 @@ function Contact() {
                         margin: 2,
                         width: 100,
                     }}
+                    value={schoolState}
+                    onChange={onSchoolChanged}
                 >
                     {school.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -134,6 +152,8 @@ function Contact() {
                         margin: 2,
                         width: 100
                     }}
+                    value={techGroupState}
+                    onChange={onTechGroupChanged}
                 >
                     {techGroup.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -159,7 +179,8 @@ function Contact() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {
+                            renderRows.map((row) => (
                             <TableRow
                                 key={row.name}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}

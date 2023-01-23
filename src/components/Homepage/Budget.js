@@ -17,25 +17,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Paper from "@mui/material/Paper";
 
-function createData(intention, type, cost, stage) {
-    return {
-        intention,
-        type,
-        cost,
-        stage,
-        history: [
-            {
-                date: '2020-01-01',
-                description: '您发起了一笔申请',
-            },
-            {
-                date: '2020-01-05',
-                description: '项目款已发放',
-            },
-        ],
-    };
-}
-
 const steps = [
     '发起预算申请',
     '项目款已发放',
@@ -125,23 +106,33 @@ Row.propTypes = {
     }).isRequired,
 };
 
-const rows = [
-    createData('3M胶', "支出", 16.0, 0),
-    createData('路由器', "支出", 399, 1),
-    createData('无刷电机', "支出", 288, 2),
-    createData('胶带', "支出", 16.0, 3),
-    createData('轧带', "支出", 3.7, 4),
-];
+const history = [
+    {
+        date: '2020-01-01',
+        description: '您发起了一笔申请',
+    },
+    {
+        date: '2020-01-05',
+        description: '项目款已发放',
+    },
+]
 
-const type = [
-    {
-        value: '支出',
-        label: '支出',
-    },
-    {
-        value: '收入',
-        label: '收入',
-    },
+function createData(intention, type, cost, stage, history) {
+    return {
+        intention,
+        type,
+        cost,
+        stage,
+        history,
+    };
+}
+
+const rows = [
+    createData('3M胶', "支出", 16.0, 0, history),
+    createData('路由器', "支出", 399, 1, history),
+    createData('无刷电机', "支出", 288, 2, history),
+    createData('胶带', "支出", 16.0, 3, history),
+    createData('轧带', "支出", 3.7, 4, history),
 ];
 
 function Budget() {
@@ -160,6 +151,18 @@ function Budget() {
     };
 
     const isDesktop = JudgeDevice()
+
+    const type = [
+        {
+            value: '支出',
+            label: '支出',
+        },
+        {
+            value: '收入',
+            label: '收入',
+        },
+    ];
+
     const method = [
         {
             value: '全部',
