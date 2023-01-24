@@ -3,7 +3,7 @@ import {
     Alert,
     Box,
     Button, Checkbox,
-    FormControl, FormControlLabel,
+    FormControl, FormControlLabel, Grid,
     IconButton,
     InputAdornment,
     InputLabel,
@@ -15,6 +15,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {post} from "../../request";
+import {JudgeDevice} from "../templates/JudgeDevice";
 
 function LoginForm() {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -22,6 +23,7 @@ function LoginForm() {
     const [password, setPassword] = React.useState("");
 
     const navigate = useNavigate()
+    const isDesktop = JudgeDevice()
 
     const handleUsernameChange = (event) => setUsername(event.target.value);
     const handlePasswordChange = (event) => setPassword(event.target.value);
@@ -37,9 +39,8 @@ function LoginForm() {
             "password":password
         }
 
+        localStorage.setItem("v5_token", "undefined")
         const res = post("/auth/authenticate", data).then((res=>{
-            console.log("res2");
-            console.log(res);
             if(res.status === 200){
                 localStorage.setItem('v5_token', res.data.token)
                 console.log(res.data.token);
@@ -123,42 +124,54 @@ function LoginForm() {
                         onChange={handlePasswordChange}
                     />
                 </FormControl>
-                <Box
+                <Grid
+                    container spacing={2}
                     sx={{
                         marginLeft: 4,
                     }}
                 >
-                    <FormControlLabel
-                        control={<Checkbox defaultChecked />}
-                        label="记住我"
-                        sx={{
-                            height: 30,
-                            marginX: 5,
-                        }}
-                    />
-                    <Button
-                        sx={{
-                            justifyContent: "left",
-                            fontWeight: "bold",
-                        }}
-                        variant="text"
-                        onClick={() => {
-                            navigate('../registry')
-                        }}
-                    >是新队员？</Button>
-                    <Button
-                        sx={{
-                            justifyContent: "right",
-                            fontWeight: "bold",
-                        }}
-                        variant="text"
-                        onClick={() => {
-                            navigate('../reset_password')
-                        }}
-                    >
-                        忘记密码？
-                    </Button>
-                </Box>
+                    <Grid xs={4}>
+                        <FormControlLabel
+                            control={<Checkbox defaultChecked />}
+                            label="记住我"
+                            sx={{
+                                marginX: 1,
+                                marginTop: 1,
+                                height: 18,
+                            }}
+                        />
+                    </Grid>
+                    <Grid>
+                        <Button
+                            sx={{
+                                fontWeight: "bold",
+                                font: 18,
+                            }}
+                            variant="text"
+                            onClick={() => {
+                                if(isDesktop){
+                                    navigate('../registry')
+                                }else return(
+                                    alert("该功能仅限桌面端")
+                                )
+                            }}
+                        >是新队员？</Button>
+                    </Grid>
+                    <Grid>
+                        <Button
+                            sx={{
+                                fontWeight: "bold",
+                                font: 18,
+                            }}
+                            variant="text"
+                            onClick={() => {
+                                navigate('../reset_password')
+                            }}
+                        >
+                            忘记密码？
+                        </Button>
+                    </Grid>
+                </Grid>
                 <Box sx={{textAlign: "center"}}>
                     <Button
                         sx={{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box, Button,
     Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider,
@@ -16,6 +16,8 @@ import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Paper from "@mui/material/Paper";
+import {post} from "../../request";
+import {useNavigate} from "react-router-dom";
 
 const steps = [
     '发起预算申请',
@@ -106,36 +108,35 @@ Row.propTypes = {
     }).isRequired,
 };
 
-const history = [
-    {
-        date: '2020-01-01',
-        description: '您发起了一笔申请',
-    },
-    {
-        date: '2020-01-05',
-        description: '项目款已发放',
-    },
-]
-
-function createData(intention, type, cost, stage, history) {
-    return {
-        intention,
-        type,
-        cost,
-        stage,
-        history,
-    };
-}
-
-const rows = [
-    createData('3M胶', "支出", 16.0, 0, history),
-    createData('路由器', "支出", 399, 1, history),
-    createData('无刷电机', "支出", 288, 2, history),
-    createData('胶带', "支出", 16.0, 3, history),
-    createData('轧带', "支出", 3.7, 4, history),
-];
-
 function Budget() {
+    const [renderRows, setRenderRows] = useState([]);
+    const [applyType, setApplyType] = useState([]);
+    const [applyDescription, setApplyDescription] = useState([]);
+    const [applyAmount, setApplyAmount] = useState([]);
+
+    const navigate = useNavigate()
+    const handleDescriptionChanged = (event) => {
+        setApplyDescription(event.target.value);
+    }
+
+    const handleTypeChanged = (event) => {
+        setApplyType(event.target.value);
+    }
+
+    const handleAmountChanged = (event) => {
+        setApplyAmount(event.target.value);
+    }
+
+    useEffect(()=>{
+        post("/transaction/get_application_list",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                setRenderRows(res.data.records);
+            }
+        })
+    },[])
+
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -147,7 +148,21 @@ function Budget() {
     };
 
     const handleApply = () => {
+        const data = {
+            id: localStorage.getItem("v5_id"),
+            description: applyDescription,
+            type: applyType,
+            amount: applyAmount,
+        }
+        post('/transaction/apply',data).then((res)=>{
+            if(res.status === 200 && res.data.msg === "success"){
+                alert("申请成功");
+            }else{
+                alert("申请失败，请检查网络状态");
+            }
+        })
         setOpen(false);
+        navigate("/homepage/budget");
     };
 
     const isDesktop = JudgeDevice()
@@ -231,6 +246,8 @@ function Budget() {
                             margin: 2,
                             width: 120,
                         }}
+                        value={applyType}
+                        onChange={handleTypeChanged}
                     >
                         {type.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -244,6 +261,8 @@ function Budget() {
                         label="申请项说明"
                         fullWidth
                         variant="standard"
+                        value={applyDescription}
+                        onChange={handleDescriptionChanged}
                     />
                     <TextField
                         autoFocus
@@ -252,6 +271,8 @@ function Budget() {
                         type="number"
                         fullWidth
                         variant="standard"
+                        value={applyAmount}
+                        onChange={handleAmountChanged}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -305,7 +326,7 @@ function Budget() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {renderRows.map((row) => (
                             <Row key={row.name} row={row} />
                         ))}
                     </TableBody>
