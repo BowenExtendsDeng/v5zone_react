@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {JudgeDevice} from "../templates/JudgeDevice";
 import {
     Box,
@@ -12,21 +12,22 @@ import {
     Stack, TextField,
     Typography
 } from "@mui/material";
+import {post} from "../../request";
 
 
 function Message(props) {
     const {name, message, date} = props
     return(
-        <Box sx={{margin: 3,}}>
+        <Box sx={{margin: 3}}>
             <React.Fragment>
                 <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
                         {date}
                     </Typography>
-                    <Typography variant="h5" component="div">
+                    <Typography sx={{ fontSize: 18 }} variant="h5" component="div">
                         {name}
                     </Typography>
-                    <Typography variant="body1" color="text.secondary">
+                    <Typography sx={{ fontSize: 20 }} variant="body1" color="text.secondary">
                         {message}
                     </Typography>
                 </CardContent>
@@ -49,27 +50,30 @@ function MessageBoard() {
         setOpen(false);
     };
 
-    const handleApply = () => {
+    const handleApply = (event) => {
+        post("/message_board/add",{
+            uploader: localStorage.getItem("v5_id"),
+            message: event.target.value,
+        }).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                alert("添加成功");
+            }
+        })
         setOpen(false);
     };
 
-    const messages = [
-        {
-            name: "张三",
-            date: "2020-9-1",
-            message: "当上帝关了这扇门，一定会为你打开另一扇门"
-        },
-        {
-            name: "张三",
-            date: "2020-9-1",
-            message: "当上帝关了这扇门，一定会为你打开另一扇门"
-        },
-        {
-            name: "张三",
-            date: "2020-9-1",
-            message: "当上帝关了这扇门，一定会为你打开另一扇门"
-        }
-    ]
+    const [messages,setMessages] = useState([]);
+
+    useEffect(()=>{
+        post("/message_board/get_all",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                setMessages(res.data);
+            }
+        })
+    },[])
 
     return (
         <Box>
@@ -121,7 +125,7 @@ function MessageBoard() {
                     <Grid container spacing={2}>
                         {messages.map((option) => (
                             <Grid xs={4}>
-                                <Message name={option.name} date={option.date} message={option.message}/>
+                                <Message name={option.uploader} date={option.date} message={option.message}/>
                             </Grid>
                         ))}
                     </Grid>
@@ -129,7 +133,7 @@ function MessageBoard() {
                 :
                 <Stack>
                     {messages.map((option) => (
-                        <Message name={option.name} date={option.date} message={option.message}/>
+                        <Message name={option.uploader} date={option.date} message={option.message}/>
                     ))}
                 </Stack>
             }

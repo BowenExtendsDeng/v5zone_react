@@ -128,14 +128,13 @@ function LoginForm() {
                         sx={{
                             margin: 3,
                             height: 30,
-                            width: 200
+                            width: 150
                         }}
                     />
                     {sendButtonState ?
                         <Button
                             sx={{
                                 margin: 3,
-                                textAlign: "center",
                                 marginTop: 4
                             }}
                             disabled="true"
@@ -146,8 +145,7 @@ function LoginForm() {
                         <Button
                             sx={{
                                 margin: 3,
-                                textAlign: "center",
-                                marginTop: 4
+                                marginTop: 4,
                             }}
                             variant="contained"
                             onClick={onClickSend}
