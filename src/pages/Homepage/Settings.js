@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import {
     Box,
@@ -12,38 +12,7 @@ import {
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {useNavigate} from "react-router-dom";
-import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
-
-function Retire(){
-    return(
-        <Box>
-            <Box>
-                <Typography
-                    sx={{
-                        margin: 3,
-                        fontFamily: "黑体",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                    }}
-                >
-                    从 V5 退役
-                </Typography>
-                <Button
-                    sx={{
-                        margin:2,
-                        textAlign: "center",
-                        backgroundColor:"#e88b8b"
-                    }}
-                    variant="contained"
-                    onClick={() => {
-                        alert('bye')
-                    }}>
-                    退役<AccessibleForwardIcon/>
-                </Button>
-            </Box>
-        </Box>
-    )
-}
+import {post} from "../../request";
 
 function SetProfile(){
     return(
@@ -75,9 +44,11 @@ function SetProfile(){
     )
 }
 function ResetPassword(){
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [showPasswordAgain, setShowPasswordAgain] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordAgain, setShowPasswordAgain] = useState(false);
 
+    const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
@@ -90,8 +61,29 @@ function ResetPassword(){
         event.preventDefault();
     };
 
+    const navigate = useNavigate()
     const onClickYes =()=>{
-
+        if(password === ""){
+            alert("密码不能为空！");
+            return;
+        }
+        if(password !== password2){
+            alert("两次输入的密码不同！");
+            return;
+        }
+        post("/auth/internal_reset_password", {
+            "id": localStorage.getItem("v5_id"),
+            "password": password
+        }).then(res=>{
+            if(res.status === 200){
+                localStorage.setItem('v5_token', "")
+                localStorage.setItem('v5_id', "")
+                alert("更改成功！请重新登录")
+                navigate("/login/auth");
+            }else {
+                alert("更新失败，请检查网络");
+            }
+        });
     }
     return (
         <Stack sx={{width: 360}}>
@@ -126,6 +118,7 @@ function ResetPassword(){
                             </IconButton>
                         </InputAdornment>
                     }
+                    onChange={(event)=>{setPassword(event.target.value)}}
                     label="新密码"
                 />
             </FormControl>
@@ -152,6 +145,7 @@ function ResetPassword(){
                         </InputAdornment>
                     }
                     label="再次输入密码"
+                    onChange={(event)=>{setPassword2(event.target.value)}}
                 />
             </FormControl>
             <Button
@@ -188,8 +182,10 @@ function Logout(){
                 }}
                 variant="contained"
                 onClick={() => {
-                navigate('/login/auth');
-            }}>
+                    localStorage.setItem("v5_id","");
+                    localStorage.setItem("v5_token","");
+                    navigate('/login/auth');
+                }}>
                 退出登录<LogoutIcon/>
             </Button>
         </Box>
@@ -227,11 +223,6 @@ function Settings() {
                     <Grid xs={3}></Grid>
                     <Grid xs={3}></Grid>
                     <Grid xs={6} align={"center"}>
-                        <Retire/>
-                    </Grid>
-                    <Grid xs={3}></Grid>
-                    <Grid xs={3}></Grid>
-                    <Grid xs={6} align={"center"}>
                         <Logout/>
                     </Grid>
                     <Grid xs={3}></Grid>
@@ -242,8 +233,6 @@ function Settings() {
                     <ResetPassword/>
                     <Divider/>
                     <SetProfile/>
-                    <Divider/>
-                    <Retire/>
                     <Divider/>
                     <Logout/>
                 </Stack>

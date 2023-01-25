@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import {
     Box,
@@ -14,11 +14,40 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import {useNavigate} from "react-router-dom";
 import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
 import Paper from "@mui/material/Paper";
+import {post} from "../../request";
 
 function Admission(){
+
     const isDesktop = JudgeDevice();
 
     const [renderRows, setRenderRows] = useState([]);
+
+    function init(){
+        post("/transaction/get_admission_needed_list",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                setRenderRows(res.data.records);
+            }
+        })
+    }
+
+    useEffect(()=>{
+        init();
+    },[])
+
+    function clickDeny() {
+
+    }
+
+    function clickPass() {
+
+    }
+
+    function onDowmload() {
+
+    }
+
     return(
         <Box>
             <Box>
@@ -40,6 +69,7 @@ function Admission(){
                                 <TableCell align="center">申请人</TableCell>
                                 <TableCell align="center">申请类型</TableCell>
                                 <TableCell align="center">申请金额</TableCell>
+                                <TableCell align="center">下载发票</TableCell>
                                 <TableCell align="center">操作</TableCell>
                             </TableRow>
                         </TableHead>
@@ -51,17 +81,41 @@ function Admission(){
                                         sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                     >
                                         <TableCell component="th" scope="row" align="center">
-                                            {row.name}
+                                            {row.intention}
                                         </TableCell>
-                                        <TableCell align="center">{row.session}</TableCell>
-                                        <TableCell align="center">{row.college}</TableCell>
-                                        <TableCell align="center">{row.techTeam}</TableCell>
-                                        <TableCell align="center">{row.home}</TableCell>
-                                        <TableCell align="center">{row.telephone}</TableCell>
-                                        <TableCell align="center">{row.email}</TableCell>
+                                        <TableCell align="center">{row.name}</TableCell>
+                                        <TableCell
+                                            align="center"
+                                        >{row.type}</TableCell>
+                                        <TableCell align="center">{row.cost}</TableCell>
                                         <TableCell align="center">
-                                            <Button>
+                                            <Button
+                                                variant="outlined"
+                                                onClick={onDowmload}
+                                            >
+                                                下载发票
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    color:"#272727",
+                                                    backgroundColor:"#7bce5a",
+                                                }}
+                                                onClick={clickPass}
+                                            >
                                                 通过
+                                            </Button>
+                                            <Button
+                                                variant="outlined"
+                                                sx={{
+                                                    color:"#ce5a5a",
+                                                    fontWeight:"bold"
+                                                }}
+                                                onClick={clickDeny}
+                                            >
+                                                拒绝
                                             </Button>
                                         </TableCell>
                                     </TableRow>
@@ -176,11 +230,11 @@ function Manage() {
             }
             {isDesktop ?
                 <Grid container spacing={2} align={"center"}>
-                    <Grid xs={3}></Grid>
-                    <Grid xs={6} align={"center"}>
+                    <Grid xs={1}></Grid>
+                    <Grid xs={10} align={"center"}>
                         <Admission/>
                     </Grid>
-                    <Grid xs={3}></Grid>
+                    <Grid xs={1}></Grid>
                     <Grid xs={3}></Grid>
                     <Grid xs={6} align={"center"}>
                         <Article/>

@@ -98,41 +98,6 @@ export function post(url, data) {
     });
 }
 
-const specialFileType = ['Blob', 'File']
-/**
- * postWithFile
- * @param url
- * @param config
- * @param file
- * @returns {Promise}
- */
-export function postWithFile(url, config, file) {
-    let formData = new FormData();
-    formData.set("id",localStorage.getItem("v5_id"));
-    if(config.type === "image"){
-        formData.set("isPublic", config.isPublic);
-        formData.set("file", file);
-    }
-    console.log(formData.get("file"));
-    return new Promise((resolve, reject) => {
-        axios.post(url,formData,{
-            headers:{
-                'Authorization': 'Bearer ' + localStorage.getItem('v5_token'),
-                'Content-Type': 'multipart/form-data',
-            },
-            transformRequest: formData => formData,
-        }).then(
-            (response) => {
-                //关闭进度条
-                resolve(response);
-            },
-            (err) => {
-                reject(err);
-            }
-        );
-    });
-}
-
 /**
  * 封装patch请求
  * @param url

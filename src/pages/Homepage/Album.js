@@ -16,7 +16,7 @@ export default function ColorTabs() {
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
             if (res.status === 200){
-                const list = res.data;
+                const list = res.data.reverse();
                 console.log("test_base_url: " + axios.defaults.baseURL);
                 list.map((item)=>{
                     item.title = item.resourceLink;

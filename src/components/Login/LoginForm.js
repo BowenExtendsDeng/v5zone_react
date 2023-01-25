@@ -40,20 +40,21 @@ function LoginForm() {
         }
 
         localStorage.setItem("v5_token", "undefined")
-        const res = post("/auth/authenticate", data).then((res=>{
+
+        post("/auth/authenticate", data).then((res=>{
             if(res.status === 200){
-                localStorage.setItem('v5_token', res.data.token)
+                localStorage.setItem('v5_token', res.data.token);
                 console.log(res.data.token);
-                localStorage.setItem('v5_id', res.data.id)
+                localStorage.setItem('v5_id', res.data.id);
                 console.log(res.data.id);
-                localStorage.setItem('v5_contact_tech',  "全部")
-                localStorage.setItem('v5_contact_college',  "全部")
-                localStorage.setItem('v5_contact_session', "现役")
+                localStorage.setItem('v5_contact_tech',  "全部");
+                localStorage.setItem('v5_contact_college',  "全部");
+                localStorage.setItem('v5_contact_session', "现役");
                 navigate("/homepage");
-            }else {
-                alert("用户名或密码错误");
             }
-        }));
+        })).catch(()=>{
+            alert("用户名或密码错误！")
+        })
     }
 
     return (

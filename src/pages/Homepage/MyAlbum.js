@@ -21,8 +21,9 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {post, postWithFile} from "../../request";
+import {post} from "../../request";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const imageType = [
     {
@@ -46,16 +47,36 @@ function upload(formData) {
 }
 
 function Image(props){
-    const {imageUrl, access} = props;
-    const [isPublic, setIsPublic] =
-        React.useState(access === true);
 
-    const handleChange = () =>{
+    const navigate = useNavigate()
+    const {imageUrl, access, title} = props;
+    const [isPublic, setIsPublic] = useState(access === true);
 
+    const handleChange = (event) =>{
+        setIsPublic(event.target.value === "公开上墙")
+        post("/album/set_public",{
+            uploader: localStorage.getItem("v5_id"),
+            isPublic: !isPublic,
+            resourceLink: title,
+        }).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                console.log(res.data);
+            }
+        })
     }
 
     const onDelete = () =>{
 
+        post("/album/delete",{
+            uploader: localStorage.getItem("v5_id"),
+            isPublic: isPublic,
+            resourceLink: title,
+        }).then(res => {
+            console.log(res.data);
+        })
+
+        navigate(0);
     }
 
     return(
@@ -148,7 +169,7 @@ function MyAlbum() {
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
             if (res.status === 200){
-                const list = res.data;
+                const list = res.data.reverse();
                 console.log("test_base_url: " + axios.defaults.baseURL);
                 list.map((item)=>{
                     item.title = item.resourceLink;
@@ -176,7 +197,7 @@ function MyAlbum() {
         setOpen(true);
     };
 
-    const [file, setFile] = useState("none")
+    const [file, setFile] = useState("null")
 
     function handleApply() {
         if(file === "none"){
@@ -272,7 +293,12 @@ function MyAlbum() {
                                 onChange={fileInputChange}
                             />
                         </Button>
-                        <Typography>
+                        <Typography
+                            sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                            }}
+                        >
                             当前接收到的文件：{file.name}
                         </Typography>
                     </Stack>
@@ -289,7 +315,10 @@ function MyAlbum() {
                     <Grid container spacing={2}>
                         {imageList.map((option) => (
                             <Grid xs={4}>
-                                <Image imageUrl={option.resourceLink} access={option.isPublic}/>
+                                <Image imageUrl={option.resourceLink}
+                                       access={option.isPublic}
+                                       title={option.title}
+                                />
                             </Grid>
                         ))}
                     </Grid>
@@ -297,7 +326,10 @@ function MyAlbum() {
                 :
                 <Stack>
                     {imageList.map((option) => (
-                        <Image imageUrl={option.resourceLink} access={option.isPublic}/>
+                        <Image imageUrl={option.resourceLink}
+                               access={option.isPublic}
+                               title={option.title}
+                        />
                     ))}
                 </Stack>
             }

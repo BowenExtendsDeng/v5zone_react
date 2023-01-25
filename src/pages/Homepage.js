@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     AppBar,
     Box,
@@ -32,10 +32,24 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CoffeeIcon from '@mui/icons-material/Coffee';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import {post} from "../request";
 
 const drawerWidth = 240;
 
 function Homepage() {
+
+    useEffect(()=>{
+        const token = localStorage.getItem("v5_token");
+        if(token === ""){
+            navigate("/login/auth")
+        }
+        post("/member/name",
+            localStorage.getItem("v5_id")).then(res => {})
+            .catch(()=> {
+                alert("登录信息过期，请重新登录")
+                navigate("/login/auth")
+            });
+    })
 
     const [showDraw, setShowDraw] = React.useState(false);
 

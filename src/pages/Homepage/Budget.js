@@ -129,7 +129,6 @@ function Budget() {
     }
 
     function init(){
-        setTimeout(function(){},500);
         post("/transaction/get_application_list",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
@@ -168,6 +167,9 @@ function Budget() {
             }else{
                 alert("申请失败，请检查网络状态");
             }
+        }).catch(()=> {
+            alert("登录信息过期，请重新登录")
+            navigate("/login/auth")
         })
         setOpen(false);
         navigate(0);
@@ -224,6 +226,9 @@ function Budget() {
             if (res.status === 200){
                 setApplyTele(res.data.msg);
             }
+        }).catch(()=> {
+            alert("登录信息过期，请重新登录")
+            navigate("/login/auth")
         })
     }
 
@@ -314,6 +319,7 @@ function Budget() {
                 </DialogActions>
             </Dialog>
             <TextField
+                disabled={true}
                 id="类型筛选"
                 select
                 label="类型筛选"
@@ -331,6 +337,7 @@ function Budget() {
                 ))}
             </TextField>
             <TextField
+                disabled={true}
                 id="时间筛选"
                 select
                 label="时间筛选"

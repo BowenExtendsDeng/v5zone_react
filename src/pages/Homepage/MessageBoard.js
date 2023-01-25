@@ -6,17 +6,32 @@ import {
     CardContent,
     Dialog, DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle, Divider,
     Grid, MenuItem,
     Stack, TextField,
     Typography
 } from "@mui/material";
 import {post} from "../../request";
+import {useNavigate} from "react-router-dom";
 
 
 function Message(props) {
-    const {name, message, date} = props
+    const {name, message, date, isMine} = props
+
+    const navigate = useNavigate();
+
+    const onDelete = () =>{
+        post("/message_board/delete",{
+            uploader: localStorage.getItem("v5_id"),
+            message: message,
+            date: date,
+        }).then(res => {
+            console.log(res.data);
+        })
+
+        navigate(0);
+    }
+
     return(
         <Box sx={{
             margin: 3,
@@ -34,6 +49,20 @@ function Message(props) {
                     <Typography sx={{ fontSize: 20 }} variant="body1" color="text.secondary">
                         {message}
                     </Typography>
+                    {isMine ?
+                        <Button
+                            size="small"
+                            sx={{
+                                backgroundColor:"#e69191"
+                            }}
+                            variant="contained"
+                            onClick={onDelete}
+                        >
+                            删除
+                        </Button>
+                        :
+                        <div/>
+                    }
                 </CardContent>
             </React.Fragment>
             <Divider/>
@@ -43,6 +72,7 @@ function Message(props) {
 }
 
 function MessageBoard() {
+
     const isDesktop = JudgeDevice()
 
     const [open, setOpen] = React.useState(false);
@@ -65,12 +95,15 @@ function MessageBoard() {
             console.log(res);
             if (res.status === 200){
                 alert("添加成功");
+                navigate(0);
             }
         })
         setOpen(false);
     };
 
+    const navigate = useNavigate()
     const [messages,setMessages] = useState([]);
+    const [nameFromId,setNameFromId] = useState("");
 
     function init(){
         setTimeout(function(){},500);
@@ -78,7 +111,16 @@ function MessageBoard() {
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
             if (res.status === 200){
-                setMessages(res.data);
+                setMessages(res.data.reverse());
+                res.data.map((option)=>{console.log(option.uploader)});
+            }
+        });
+        post("/member/name",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                setNameFromId(res.data.msg);
+                console.log(nameFromId);
             }
         })
     }
@@ -140,7 +182,11 @@ function MessageBoard() {
                     <Grid container spacing={2}>
                         {messages.map((option) => (
                             <Grid xs={4}>
-                                <Message name={option.uploader} date={option.date} message={option.message}/>
+                                <Message name={option.uploader}
+                                         date={option.date}
+                                         message={option.message}
+                                         isMine = {nameFromId === option.uploader}
+                                />
                             </Grid>
                         ))}
                     </Grid>
@@ -148,7 +194,11 @@ function MessageBoard() {
                 :
                 <Stack>
                     {messages.map((option) => (
-                        <Message name={option.uploader} date={option.date} message={option.message}/>
+                        <Message name={option.uploader}
+                                 date={option.date}
+                                 message={option.message}
+                                 isMine = {nameFromId === option.uploader}
+                        />
                     ))}
                 </Stack>
             }
