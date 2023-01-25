@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Box, Button,
-    Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider,
-    IconButton, MenuItem, Step, StepLabel, Stepper,
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+     MenuItem,
     Table,
     TableBody,
     TableCell,
@@ -13,100 +18,10 @@ import {
 } from "@mui/material";
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import PropTypes from "prop-types";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Paper from "@mui/material/Paper";
 import {post} from "../../request";
 import {useNavigate} from "react-router-dom";
-
-const steps = [
-    '发起预算申请',
-    '项目款已发放',
-    '发票已上传',
-    '审核通过交易结束',
-];
-
-function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-
-    return (
-        <React.Fragment>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row"  align="center">
-                    {row.intention}
-                </TableCell>
-                <TableCell align="center">{row.type}</TableCell>
-                <TableCell align="center">{row.cost}</TableCell>
-                <TableCell align="center">{row.stage}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                申请项细节
-                            </Typography>
-                            <Stepper activeStep={row.stage} alternativeLabel>
-                                {steps.map((label) => (
-                                    <Step key={label}>
-                                        <StepLabel>{label}</StepLabel>
-                                    </Step>
-                                ))}
-                            </Stepper>
-                            <Divider/>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell align="center">操作时间</TableCell>
-                                        <TableCell align="center">描述</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
-                                            <TableCell component="th" scope="row" align="center">
-                                                {historyRow.date}
-                                            </TableCell>
-                                            <TableCell align="center">{historyRow.description}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </React.Fragment>
-    );
-}
-
-Row.propTypes = {
-    row: PropTypes.shape({
-        calories: PropTypes.number.isRequired,
-        carbs: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        history: PropTypes.arrayOf(
-            PropTypes.shape({
-                amount: PropTypes.number.isRequired,
-                customerId: PropTypes.string.isRequired,
-                date: PropTypes.string.isRequired,
-            }),
-        ).isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        protein: PropTypes.number.isRequired,
-    }).isRequired,
-};
+import BudgetRow from "../../components/Homepage/Budget/BudgetRow";
 
 function Budget() {
     const [renderRows, setRenderRows] = useState([]);
@@ -133,7 +48,7 @@ function Budget() {
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
             if (res.status === 200){
-                setRenderRows(res.data.records);
+                setRenderRows(res.data.records.reverse());
             }
         })
     }
@@ -164,15 +79,12 @@ function Budget() {
         post('/transaction/apply',data).then((res)=>{
             if(res.status === 200 && res.data.msg === "success"){
                 alert("申请成功");
+                navigate(0);
             }else{
                 alert("申请失败，请检查网络状态");
             }
-        }).catch(()=> {
-            alert("登录信息过期，请重新登录")
-            navigate("/login/auth")
         })
         setOpen(false);
-        navigate(0);
     };
 
     const isDesktop = JudgeDevice()
@@ -314,8 +226,12 @@ function Budget() {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{marginRight:3, marginBottom: 3}}>取消</Button>
-                    <Button onClick={handleApply} sx={{marginRight:5, marginBottom: 3}}>确认申请</Button>
+                    <Button onClick={handleClose}
+                            sx={{marginRight:3, marginBottom: 3}
+                    }>取消</Button>
+                    <Button onClick={handleApply}
+                            sx={{marginRight:5, marginBottom: 3}
+                    }>确认申请</Button>
                 </DialogActions>
             </Dialog>
             <TextField
@@ -367,7 +283,7 @@ function Budget() {
                     </TableHead>
                     <TableBody>
                         {renderRows.map((row) => (
-                            <Row key={row.name} row={row} />
+                            <BudgetRow key={row.name} row={row} />
                         ))}
                     </TableBody>
                 </Table>

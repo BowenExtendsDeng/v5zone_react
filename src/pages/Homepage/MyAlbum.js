@@ -37,7 +37,7 @@ const imageType = [
 ];
 
 function upload(formData) {
-    fetch('http://localhost:8849/album/upload', {
+    fetch(axios.defaults.baseURL + '/album/upload', {
         method: 'post',
         body: formData,
     }).then(response => response.json())

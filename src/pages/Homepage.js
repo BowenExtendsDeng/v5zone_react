@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     AppBar,
     Box,
@@ -44,14 +44,20 @@ function Homepage() {
             navigate("/login/auth")
         }
         post("/member/name",
-            localStorage.getItem("v5_id")).then(res => {})
-            .catch(()=> {
+            localStorage.getItem("v5_id")).then(res => {}
+        ).catch(()=> {
                 alert("登录信息过期，请重新登录")
                 navigate("/login/auth")
-            });
+        });
+        post("/auth/is_monitor", localStorage.getItem("v5_id"))
+            .then(res => {
+                setIsMonitor(res.data);
+        })
     })
 
-    const [showDraw, setShowDraw] = React.useState(false);
+    const [isMonitor, setIsMonitor] = useState(false);
+
+    const [showDraw, setShowDraw] = useState(false);
 
     const navigate = useNavigate()
 
@@ -127,18 +133,22 @@ function Homepage() {
                             >
                                 <AddPhotoAlternateIcon/>
                             </IconButton>
-                            <IconButton
-                                sx={{
-                                    position: "absolute",
-                                    right: 100
-                                }}
-                                onClick={() => {
-                                    navigate('/homepage/manage');
-                                    handleDrawerClose();
-                                }}
-                            >
-                                <ManageAccountsIcon/>
-                            </IconButton>
+                            {isMonitor ?
+                                <IconButton
+                                    sx={{
+                                        position: "absolute",
+                                        right: 100
+                                    }}
+                                    onClick={() => {
+                                        navigate('/homepage/manage');
+                                        handleDrawerClose();
+                                    }}
+                                >
+                                    <ManageAccountsIcon/>
+                                </IconButton>
+                                :
+                                <div/>
+                            }
                         </Toolbar>
                     </AppBar>
                 </Box>
@@ -383,18 +393,22 @@ function Homepage() {
                             >
                                 <AddPhotoAlternateIcon/>
                             </IconButton>
-                            <IconButton
-                                sx={{
-                                    position: "absolute",
-                                    right: 100
-                                }}
-                                onClick={() => {
-                                    navigate('/homepage/manage');
-                                    handleDrawerClose();
-                                }}
-                            >
-                                <ManageAccountsIcon/>
-                            </IconButton>
+                            {isMonitor ?
+                                <IconButton
+                                    sx={{
+                                        position: "absolute",
+                                        right: 100
+                                    }}
+                                    onClick={() => {
+                                        navigate('/homepage/manage');
+                                        handleDrawerClose();
+                                    }}
+                                >
+                                    <ManageAccountsIcon/>
+                                </IconButton>
+                                :
+                                <div/>
+                            }
                         </Toolbar>
                         <Divider/>
                         <Outlet/>
