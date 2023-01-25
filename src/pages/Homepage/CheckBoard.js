@@ -9,7 +9,7 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import {JudgeDevice} from "../templates/JudgeDevice";
+import {JudgeDevice} from "../../components/templates/JudgeDevice";
 
 function News(props){
 

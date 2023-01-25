@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {JudgeDevice} from "../templates/JudgeDevice";
+import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import copy from 'copy-to-clipboard';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 

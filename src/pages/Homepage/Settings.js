@@ -1,5 +1,5 @@
 import React from 'react';
-import {JudgeDevice} from "../templates/JudgeDevice";
+import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import {
     Box,
     Button, Divider,

@@ -11,7 +11,7 @@ import {
     TableRow, TextField,
     Typography
 } from "@mui/material";
-import {JudgeDevice} from "../templates/JudgeDevice";
+import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';

@@ -4,15 +4,15 @@ import {Navigate} from "react-router-dom";
 import LoginForm from "../components/Login/LoginForm";
 import ForgetPassword from "../components/Login/ForgetPassword";
 import Registry from "../components/Login/Registry";
-import CheckBoard from "../components/Homepage/CheckBoard"
-import Contact from "../components/Homepage/Contact"
-import MessageBoard from "../components/Homepage/MessageBoard"
-import Prize from "../components/Homepage/Prize"
-import Settings from "../components/Homepage/Settings"
-import Album from "../components/Homepage/Album"
-import MyAlbum from "../components/Homepage/MyAlbum"
-import Budget from "../components/Homepage/Budget"
-import Manage from "../components/Homepage/Manage"
+import CheckBoard from "../pages/Homepage/CheckBoard"
+import Contact from "../pages/Homepage/Contact"
+import MessageBoard from "../pages/Homepage/MessageBoard"
+import Prize from "../pages/Homepage/Prize"
+import Settings from "../pages/Homepage/Settings"
+import Album from "../pages/Homepage/Album"
+import MyAlbum from "../pages/Homepage/MyAlbum"
+import Budget from "../pages/Homepage/Budget"
+import Manage from "../pages/Homepage/Manage"
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
     {
@@ -37,7 +37,7 @@ export default [
             },
             {
                 path: 'contact',
-                element: <Contact/>
+                element: <Contact/>,
             },
             {
                 path: 'message_board',

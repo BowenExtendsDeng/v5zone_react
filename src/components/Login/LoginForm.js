@@ -46,6 +46,9 @@ function LoginForm() {
                 console.log(res.data.token);
                 localStorage.setItem('v5_id', res.data.id)
                 console.log(res.data.id);
+                localStorage.setItem('v5_contact_tech',  "全部")
+                localStorage.setItem('v5_contact_college',  "全部")
+                localStorage.setItem('v5_contact_session', "现役")
                 navigate("/homepage");
             }else {
                 alert("用户名或密码错误");

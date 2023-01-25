@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Box, ImageList, ImageListItem, Typography} from "@mui/material";
-import {JudgeDevice} from "../templates/JudgeDevice";
+import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import {post} from "../../request";
 import {useEffect, useState} from "react";
 import axios from "axios";
