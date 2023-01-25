@@ -6,6 +6,8 @@ import axios from "axios";
 axios.defaults.timeout = 100000;
 axios.defaults.baseURL = "http://localhost:8849";
 
+
+
 /**
  * http request 拦截器
  */
@@ -57,9 +59,13 @@ export function get(url, params = {}) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
             params: params,
+            headers:{
+                'Authorization': 'Bearer ' + localStorage.getItem('v5_token'),
+                "Content-Type": "application/json",
+            }
         }).then((response) => {
             landing(url, params, response.data);
-            resolve(response.data);
+            resolve(response);
         })
             .catch((error) => {
                 reject(error);
@@ -80,6 +86,41 @@ export function post(url, data) {
                 'Authorization': 'Bearer ' + localStorage.getItem('v5_token'),
                 "Content-Type": "application/json",
             }
+        }).then(
+            (response) => {
+                //关闭进度条
+                resolve(response);
+            },
+            (err) => {
+                reject(err);
+            }
+        );
+    });
+}
+
+const specialFileType = ['Blob', 'File']
+/**
+ * postWithFile
+ * @param url
+ * @param config
+ * @param file
+ * @returns {Promise}
+ */
+export function postWithFile(url, config, file) {
+    let formData = new FormData();
+    formData.set("id",localStorage.getItem("v5_id"));
+    if(config.type === "image"){
+        formData.set("isPublic", config.isPublic);
+        formData.set("file", file);
+    }
+    console.log(formData.get("file"));
+    return new Promise((resolve, reject) => {
+        axios.post(url,formData,{
+            headers:{
+                'Authorization': 'Bearer ' + localStorage.getItem('v5_token'),
+                'Content-Type': 'multipart/form-data',
+            },
+            transformRequest: formData => formData,
         }).then(
             (response) => {
                 //关闭进度条

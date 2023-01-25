@@ -67,7 +67,7 @@ function Contact() {
         },
     ];
 
-    useEffect(()=>{
+    function init(){
         post("/member/contact",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
@@ -75,6 +75,10 @@ function Contact() {
                 setRenderRows(res.data.contactInfo);
             }
         })
+    }
+
+    useEffect(()=>{
+        init();
     },[])
 
     const onTechGroupChanged = (event) => {

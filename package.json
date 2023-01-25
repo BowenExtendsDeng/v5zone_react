@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.3",
     "copy-to-clipboard": "^3.3.3",
+    "node-fetch": "^3.3.0",
     "prop-types": "^15.8.1",
     "qs": "^6.11.0",
     "react": "^18.2.0",

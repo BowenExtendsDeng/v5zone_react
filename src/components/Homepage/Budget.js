@@ -113,6 +113,7 @@ function Budget() {
     const [applyType, setApplyType] = useState([]);
     const [applyDescription, setApplyDescription] = useState([]);
     const [applyAmount, setApplyAmount] = useState([]);
+    const [applyTele, setApplyTele] = useState([]);
 
     const navigate = useNavigate()
     const handleDescriptionChanged = (event) => {
@@ -127,7 +128,8 @@ function Budget() {
         setApplyAmount(event.target.value);
     }
 
-    useEffect(()=>{
+    function init(){
+        setTimeout(function(){},500);
         post("/transaction/get_application_list",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
@@ -135,6 +137,11 @@ function Budget() {
                 setRenderRows(res.data.records);
             }
         })
+    }
+
+    useEffect(()=>{
+        init();
+        getTele();
     },[])
 
     const [open, setOpen] = React.useState(false);
@@ -153,6 +160,7 @@ function Budget() {
             description: applyDescription,
             type: applyType,
             amount: applyAmount,
+            alipayTelephone: applyTele,
         }
         post('/transaction/apply',data).then((res)=>{
             if(res.status === 200 && res.data.msg === "success"){
@@ -162,7 +170,7 @@ function Budget() {
             }
         })
         setOpen(false);
-        navigate("/homepage/budget");
+        navigate(0);
     };
 
     const isDesktop = JudgeDevice()
@@ -204,6 +212,21 @@ function Budget() {
         },
 
     ];
+
+    function handleTeleChanged() {
+        setApplyTele()
+    }
+
+    function getTele(){
+        post("/member/tele",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                setApplyTele(res.data.msg);
+            }
+        })
+    }
+
     return (
         <Box>
             {isDesktop ? <div/> :
@@ -273,6 +296,16 @@ function Budget() {
                         variant="standard"
                         value={applyAmount}
                         onChange={handleAmountChanged}
+                    />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="支付宝绑定手机号"
+                        type="number"
+                        fullWidth
+                        variant="standard"
+                        value={applyTele}
+                        onChange={handleTeleChanged}
                     />
                 </DialogContent>
                 <DialogActions>

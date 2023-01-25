@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {JudgeDevice} from "../templates/JudgeDevice";
 import copy from 'copy-to-clipboard';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
@@ -10,11 +10,19 @@ import {
     CardActionArea,
     CardActions,
     CardMedia,
-    Grid, MenuItem,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grid,
+    MenuItem,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
+import {post, postWithFile} from "../../request";
+import axios from "axios";
 
 const imageType = [
     {
@@ -26,9 +34,21 @@ const imageType = [
         label: '私有',
     },
 ];
+
+function upload(formData) {
+    fetch('http://localhost:8849/album/upload', {
+        method: 'post',
+        body: formData,
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data);
+        });
+}
+
 function Image(props){
     const {imageUrl, access} = props;
-    const [isPublic, setIsPublic] = React.useState(access);
+    const [isPublic, setIsPublic] =
+        React.useState(access === true);
 
     const handleChange = () =>{
 
@@ -65,6 +85,7 @@ function Image(props){
                         margin: 2,
                         width: 120,
                     }}
+                    onChange={handleChange}
                 >
                     {imageType.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -73,7 +94,7 @@ function Image(props){
                 ))}
                 </TextField>
                 <Button
-                    size="middle"
+                    size="small"
                     variant="contained"
                     onClick={()=>{
                         copy(imageUrl);
@@ -82,7 +103,7 @@ function Image(props){
                     复制链接
                 </Button>
                 <Button
-                    size="middle"
+                    size="small"
                     sx={{
                         backgroundColor:"#e69191"
                     }}
@@ -95,32 +116,90 @@ function Image(props){
         </Card>
     )
 }
+
+const method = [
+    {
+        value: '公开上墙',
+        label: '公开上墙',
+    },
+    {
+        value: '私有',
+        label: '私有',
+    },
+];
+
 function MyAlbum() {
+    const [methodState, setMethodState] = useState("公开上墙")
     const fileInputChange = (event) => {
-        const fileData = event.target.files[0];
-        alert(fileData.name)
+        const newFile = event.target.files[0];
+        if(newFile.size >= 1048576 * 10){
+            alert("文件不能大于 10M ");
+            return;
+        }
+        setFile(event.target.files[0]);
     }
 
     const isDesktop = JudgeDevice()
 
-    const imageList = [
-        {
-            url: "https://img1.imgtp.com/2023/01/20/KLLvT9x1.jpeg",
-            access: true
-        },
-        {
-            url: "https://img1.imgtp.com/2023/01/20/fZwJbiLr.jpeg",
-            access: false
-        },
-        {
-            url: "https://img1.imgtp.com/2023/01/20/3b6GB4J6.jpeg",
-            access: true
-        },
-        {
-            url: "https://img1.imgtp.com/2023/01/20/1XD979GB.jpeg",
-            access: false
-        },
-    ]
+    const [imageList, setImageList] = useState([])
+
+    function init(){
+        post("/album/get_mine",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                const list = res.data;
+                console.log("test_base_url: " + axios.defaults.baseURL);
+                list.map((item)=>{
+                    item.title = item.resourceLink;
+                    item.resourceLink =
+                        axios.defaults.baseURL
+                        + "/album/download/"
+                        + item.resourceLink;
+                });
+                setImageList(list);
+            }
+        })
+    }
+
+    useEffect(()=>{
+        init();
+    },[])
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const [file, setFile] = useState("none")
+
+    function handleApply() {
+        if(file === "none"){
+            alert("请选择一个文件，再上传！");
+            return;
+        }
+
+        const isPublic = (methodState === "公开上墙") ? "true" : "false";
+
+        let formData = new FormData();
+        formData.append("id", localStorage.getItem("v5_id"));
+        formData.append("isPublic", isPublic);
+        formData.append("file", file);
+
+        upload(formData);
+
+        init();
+        handleClose();
+    }
+
+    const onMethodChanged = (event) => {
+        setMethodState(event.target.value);
+    }
 
     return (
         <Box>
@@ -144,21 +223,73 @@ function MyAlbum() {
                     position: "absolute",
                     right: 20,
                 }}
+                onClick={handleClickOpen}
             >
-                Upload<DriveFolderUploadIcon/>
-                <input
-                    hidden accept="image/*"
-                    multiple type="file"
-                    onChange={fileInputChange}
-                />
+                上传新文件
             </Button>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+            >
+                <DialogTitle>新建上传</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        注意！ 图片的大小不得大于10Mb，单次最多上传1张照片
+                    </DialogContentText>
+                    <Stack>
+                        <TextField
+                            id="访问限制"
+                            select
+                            label="访问限制"
+                            defaultValue="公开上墙"
+                            size="small"
+                            sx={{
+                                margin: 2,
+                                width: 120,
+                            }}
+                            value={methodState}
+                            onChange={onMethodChanged}
+                        >
+                            {method.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            sx={{
+                                margin: 1,
+                                height: 160,
+                                fontSize: 24
+                            }}
+                        >
+                            点击上传 <DriveFolderUploadIcon/>
+                            <input
+                                hidden accept="image/*"
+                                multiple type="file"
+                                onChange={fileInputChange}
+                            />
+                        </Button>
+                        <Typography>
+                            当前接收到的文件：{file.name}
+                        </Typography>
+                    </Stack>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} sx={{marginRight:3, marginBottom: 3}}>取消</Button>
+                    <Button onClick={handleApply} sx={{marginRight:5, marginBottom: 3}}>上传</Button>
+                </DialogActions>
+            </Dialog>
             <Box sx={{height: 50}}/>
             {isDesktop?
                 <Box>
                     <Grid container spacing={2}>
                         {imageList.map((option) => (
                             <Grid xs={4}>
-                                <Image imageUrl={option.url} access={option.access}/>
+                                <Image imageUrl={option.resourceLink} access={option.isPublic}/>
                             </Grid>
                         ))}
                     </Grid>
@@ -166,7 +297,7 @@ function MyAlbum() {
                 :
                 <Stack>
                     {imageList.map((option) => (
-                        <Image imageUrl={option.url} access={option.access}/>
+                        <Image imageUrl={option.resourceLink} access={option.isPublic}/>
                     ))}
                 </Stack>
             }

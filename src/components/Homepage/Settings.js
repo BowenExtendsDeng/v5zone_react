@@ -94,7 +94,7 @@ function ResetPassword(){
 
     }
     return (
-        <Box>
+        <Stack sx={{width: 360}}>
             <Typography
                 sx={{
                     margin: 3,
@@ -157,12 +157,12 @@ function ResetPassword(){
             <Button
                 sx={{
                     margin: 3,
-                    textAlign: "center"
+                    textAlign: "center",
                 }}
                 variant="contained"
                 onClick={onClickYes}
             >确认重置</Button>
-        </Box>
+        </Stack>
     )
 }
 

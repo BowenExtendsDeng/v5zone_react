@@ -254,20 +254,6 @@ function Homepage() {
                                 <ListItemText primary={"公告栏"}/>
                             </ListItemButton>
                         </ListItem>
-                        <ListItem key={'组员联系方式'} disablePadding>
-                            <ListItemButton
-                                onClick={() => {
-                                    navigate('/homepage/contact');
-                                    handleDrawerClose();
-                                }}
-                            >
-                                <ListItemIcon>
-                                    {<PhoneIcon/>
-                                    }
-                                </ListItemIcon>
-                                <ListItemText primary={"组员联系方式"}/>
-                            </ListItemButton>
-                        </ListItem>
                         <ListItem key={'我的奖状'} disablePadding>
                             <ListItemButton
                                 onClick={() => {
@@ -293,6 +279,20 @@ function Homepage() {
                                     }
                                 </ListItemIcon>
                                 <ListItemText primary={"经费报销"}/>
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem key={'组员联系方式'} disablePadding>
+                            <ListItemButton
+                                onClick={() => {
+                                    navigate('/homepage/contact');
+                                    handleDrawerClose();
+                                }}
+                            >
+                                <ListItemIcon>
+                                    {<PhoneIcon/>
+                                    }
+                                </ListItemIcon>
+                                <ListItemText primary={"组员联系方式"}/>
                             </ListItemButton>
                         </ListItem>
                     </List>

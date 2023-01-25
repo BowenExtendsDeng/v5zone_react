@@ -7,7 +7,7 @@ import {
     Dialog, DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    DialogTitle, Divider,
     Grid, MenuItem,
     Stack, TextField,
     Typography
@@ -18,7 +18,11 @@ import {post} from "../../request";
 function Message(props) {
     const {name, message, date} = props
     return(
-        <Box sx={{margin: 3}}>
+        <Box sx={{
+            margin: 3,
+            backgroundColor: "#f1f1f1",
+            boxShadow: "0 0 15px 10px #FFFFFF",
+        }}>
             <React.Fragment>
                 <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
@@ -32,6 +36,7 @@ function Message(props) {
                     </Typography>
                 </CardContent>
             </React.Fragment>
+            <Divider/>
         </Box>
 
     );
@@ -42,6 +47,8 @@ function MessageBoard() {
 
     const [open, setOpen] = React.useState(false);
 
+    const [msg, setMsg] = React.useState("");
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -50,10 +57,10 @@ function MessageBoard() {
         setOpen(false);
     };
 
-    const handleApply = (event) => {
+    const handleApply = () => {
         post("/message_board/add",{
             uploader: localStorage.getItem("v5_id"),
-            message: event.target.value,
+            message: msg,
         }).then(res => {
             console.log(res);
             if (res.status === 200){
@@ -65,7 +72,8 @@ function MessageBoard() {
 
     const [messages,setMessages] = useState([]);
 
-    useEffect(()=>{
+    function init(){
+        setTimeout(function(){},500);
         post("/message_board/get_all",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
@@ -73,7 +81,15 @@ function MessageBoard() {
                 setMessages(res.data);
             }
         })
+    }
+
+    useEffect(()=>{
+        init();
     },[])
+
+    const handleOnChange = (event) => {
+        setMsg(event.target.value);
+    }
 
     return (
         <Box>
@@ -93,15 +109,13 @@ function MessageBoard() {
                 variant="contained"
                 onClick={handleClickOpen}
                 sx={{
-                margin: 3,
+                margin: 2,
                 position: "absolute",
                 right: 20,
             }}>新建留言</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
-                sx={{
-                }}
             >
                 <DialogTitle>新建留言</DialogTitle>
                 <DialogContent>
@@ -112,6 +126,7 @@ function MessageBoard() {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={handleOnChange}
                     />
                 </DialogContent>
                 <DialogActions>
