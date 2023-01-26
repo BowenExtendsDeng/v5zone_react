@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Grid, MenuItem,
@@ -15,11 +15,13 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import {post} from "../../../request";
+import {useNavigate} from "react-router-dom";
 
 function MarkdownTable() {
 
+    const navigate = useNavigate()
+
     const [renderRows, setRenderRows] = useState([]);
-    const [methodState, setMethodState] = useState([]);
     const method = [
         {
             value: '发布',
@@ -31,12 +33,55 @@ function MarkdownTable() {
         },
     ];
 
-    function clickDelete() {
-
+    const clickDelete = (event) => {
+        post("/markdown/delete",{
+            fileLink: event.target.value,
+        }).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                alert("操作成功");
+                navigate(0);
+            }
+        })
     }
 
-    function onMethodChanged() {
+    function onMethodChanged (fileLink, isPublished) {
+        post("/markdown/update",{
+            fileLink: fileLink,
+            isPublished: !isPublished,
+        }).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                alert("操作成功");
+                navigate(0);
+            }
+        })
+    }
 
+    function init() {
+        post("/markdown/all",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200){
+                setRenderRows(res.data.reverse());
+            }
+        })
+    }
+
+    useEffect(()=>{
+        init();
+    },[])
+
+    const openInNewTab = url => {
+        // 👇️ setting target to _blank with window.open
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    const clickDownload = (event) => {
+        const url = axios.defaults.baseURL
+            + "/markdown/download/"
+            + event.target.value;
+        openInNewTab(url);
     }
 
     return(
@@ -45,8 +90,8 @@ function MarkdownTable() {
                 <TableHead>
                     <TableRow>
                         <TableCell align="center">上传时间</TableCell>
-                        <TableCell align="center">图片链接</TableCell>
                         <TableCell align="center">标题</TableCell>
+                        <TableCell align="center">图片链接</TableCell>
                         <TableCell align="center">状态</TableCell>
                         <TableCell align="center">操作</TableCell>
                     </TableRow>
@@ -55,30 +100,31 @@ function MarkdownTable() {
                     {
                         renderRows.map((row) => (
                             <TableRow
-                                key={row.name}
+                                key={row.fileLink}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell component="th" scope="row" align="center">
-                                    {row.intention}
+                                    {row.pubDate}
                                 </TableCell>
                                 <TableCell align="center">
-                                    {row.name}</TableCell>
+                                    {row.title}</TableCell>
                                 <TableCell
                                     align="center"
-                                >{row.type}</TableCell>
+                                >{row.imageLink}</TableCell>
                                 <TableCell align="center">
                                     <TextField
                                         id="是否发布"
                                         select
                                         label="是否发布"
-                                        defaultValue="公开上墙"
                                         size="small"
                                         sx={{
                                             margin: 2,
                                             width: 120,
                                         }}
-                                        value={methodState}
-                                        onChange={onMethodChanged}
+                                        value={row.isPublished ? "发布" : "不发布"}
+                                        onChange={()=>{
+                                            onMethodChanged(row.fileLink, row.isPublished);
+                                        }}
                                     >
                                         {method.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -88,16 +134,19 @@ function MarkdownTable() {
                                     </TextField>
                                 </TableCell>
                                 <TableCell align="center">
-
                                     <Button
                                         variant="outlined"
                                         value={row.fileLink}
-                                        onClick={clickDelete}
+                                        onClick={clickDownload}
                                     >
-                                        修改封面图链接
+                                        下载文件
                                     </Button>
                                     <Button
                                         variant="outlined"
+                                        sx={{
+                                            color: "#ce5a5a",
+                                            fontWeight: "bold"
+                                        }}
                                         value={row.fileLink}
                                         onClick={clickDelete}
                                     >
@@ -113,6 +162,9 @@ function MarkdownTable() {
 }
 
 function Article() {
+
+    const navigate = useNavigate();
+
     const type = [
         {
             value: '暂不发布',
@@ -129,7 +181,7 @@ function Article() {
             body: formData,
         }).then(response => response.json())
             .then(data => {
-                console.log(data);
+                navigate(0);
             });
     }
 

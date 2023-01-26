@@ -12,11 +12,9 @@ import {
     Typography
 } from "@mui/material";
 import {post} from "../../request";
-import axios from "axios";
 
 function News(props) {
-
-    const {imageUrl, title, date} = props;
+    const {imageUrl, title, fileLink, pubDate} = props;
 
     function handleRead() {
         alert("click")
@@ -44,19 +42,17 @@ function News(props) {
                 onClick={handleRead}
             >
                 <Grid container spacing={1}>
-                    <Grid xs={10}>
+                    <Grid xs={9}>
                         <Typography
-                            sx={{fontSize: 20, fontWeight: "bold"}}
+                            sx={{fontSize: 24, fontWeight: "bold"}}
                         >{title}</Typography>
 
                     </Grid>
-                    <Grid xs={2}></Grid>
-                    <Grid xs={8}>
-                    </Grid>
-                    <Grid xs={4}>
+                    <Grid xs={3}>
                         <Typography
-                            sx={{fontSize: 20, fontWeight: "bold"}}
-                        >{date}</Typography>
+                            color="text.secondary"
+                            sx={{fontSize: 14,marginTop:2}}
+                        >{pubDate}</Typography>
                     </Grid>
                 </Grid>
             </CardActions>
@@ -68,23 +64,19 @@ function CheckBoard() {
 
     const isDesktop = JudgeDevice()
 
-    const [imageList, setImageList] = useState([])
+    const [renderRows, setRenderRows] = useState([])
 
     function init() {
-        post("/album/get_mine",
+        post("/markdown/publish",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200) {
-                const list = res.data.reverse();
-                console.log("test_base_url: " + axios.defaults.baseURL);
-                list.map((item) => {
-                    item.title = item.resourceLink;
-                    item.resourceLink =
-                        axios.defaults.baseURL
-                        + "/album/download/"
-                        + item.resourceLink;
-                });
-                setImageList(list);
+            if (res.status === 200){
+                let temp = res.data.reverse();
+                temp.map((option) => {
+                    option.pubDate = option.pubDate.split("T")[0];
+                })
+                setRenderRows(temp);
+
             }
         })
     }
@@ -110,11 +102,12 @@ function CheckBoard() {
             {isDesktop ?
                 <Box>
                     <Grid container spacing={2}>
-                        {imageList.map((option) => (
+                        {renderRows.map((option) => (
                             <Grid xs={4}>
-                                <News imageUrl={option.resourceLink}
-                                      access={option.isPublic}
+                                <News imageUrl={option.imageLink}
+                                      fileLink={option.fileLink}
                                       title={option.title}
+                                      pubDate={option.pubDate}
                                 />
                             </Grid>
                         ))}
@@ -122,10 +115,11 @@ function CheckBoard() {
                 </Box>
                 :
                 <Stack>
-                    {imageList.map((option) => (
-                        <News imageUrl={option.resourceLink}
-                              access={option.isPublic}
+                    {renderRows.map((option) => (
+                        <News imageUrl={option.imageLink}
+                              fileLink={option.fileLink}
                               title={option.title}
+                              pubDate={option.pubDate}
                         />
                     ))}
                 </Stack>
