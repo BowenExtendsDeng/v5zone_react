@@ -35,11 +35,11 @@ function Manage() {
                         <Admission/>
                     </Grid>
                     <Grid xs={1}></Grid>
-                    <Grid xs={3}></Grid>
-                    <Grid xs={6} align={"center"}>
+                    <Grid xs={1}></Grid>
+                    <Grid xs={10} align={"center"}>
                         <Article/>
                     </Grid>
-                    <Grid xs={3}></Grid>
+                    <Grid xs={1}></Grid>
                     <Grid xs={3}></Grid>
                     <Grid xs={6} align={"center"}>
                         <POI/>

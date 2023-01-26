@@ -1,12 +1,20 @@
 import {JudgeDevice} from "../../templates/JudgeDevice";
 import React, {useEffect, useState} from "react";
 import {post} from "../../../request";
-import {Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import {Box,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-export default function Admission(){
+export default function Admission() {
 
     const navigate = useNavigate();
 
@@ -14,26 +22,34 @@ export default function Admission(){
 
     const [renderRows, setRenderRows] = useState([]);
 
-    function init(){
+    const [isVice, setVice] = useState(false);
+
+    function init() {
         post("/transaction/get_admission_needed_list",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
-                setRenderRows(res.data.records);
+            if (res.status === 200) {
+                if (res.data.records !== null) {
+                    setRenderRows(res.data.records);
+                }
             }
         })
+        post("/auth/is_monitor", localStorage.getItem("v5_id"))
+            .then(res => {
+                setVice(res.data === "VICE_CAPTAIN");
+            })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     const clickDeny = (event) => {
         post("/transaction/admin", {
             "id": event.target.value,
             "message": "interrupted",
-        }).then(res=>{
-            if(res.status === 200){
+        }).then(res => {
+            if (res.status === 200) {
                 alert("操作成功");
                 navigate(0);
             }
@@ -45,10 +61,11 @@ export default function Admission(){
         post("/transaction/admin", {
             "id": event.target.value,
             "message": "forward",
-        }).then(res=>{
-            if(res.status === 200){
+        }).then(res => {
+            if (res.status === 200) {
                 alert("操作成功")
-            };
+            }
+            ;
             navigate(0);
         });
     }
@@ -65,7 +82,7 @@ export default function Admission(){
         openInNewTab(url);
     }
 
-    return(
+    return (
         <Box>
             <Box>
                 <Typography
@@ -107,7 +124,7 @@ export default function Admission(){
                                         <TableCell align="center">{row.cost}</TableCell>
                                         <TableCell align="center">
                                             <Button
-                                                disabled={row.stage === 1}
+                                                disabled={row.stage === 1 || !isVice}
                                                 variant="outlined"
                                                 value={row.fileName}
                                                 onClick={clickDownload}
@@ -117,10 +134,11 @@ export default function Admission(){
                                         </TableCell>
                                         <TableCell align="center">
                                             <Button
+                                                disabled={!isVice}
                                                 variant="contained"
                                                 sx={{
-                                                    color:"#272727",
-                                                    backgroundColor:"#7bce5a",
+                                                    color: "#272727",
+                                                    backgroundColor: "#7bce5a",
                                                 }}
                                                 value={row.id}
                                                 onClick={clickPass}
@@ -128,10 +146,11 @@ export default function Admission(){
                                                 通过
                                             </Button>
                                             <Button
+                                                disabled={!isVice}
                                                 variant="outlined"
                                                 sx={{
-                                                    color:"#ce5a5a",
-                                                    fontWeight:"bold"
+                                                    color: "#ce5a5a",
+                                                    fontWeight: "bold"
                                                 }}
                                                 value={row.id}
                                                 onClick={clickDeny}

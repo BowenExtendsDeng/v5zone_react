@@ -17,7 +17,6 @@ import {
     Typography
 } from "@mui/material";
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
-import PropTypes from "prop-types";
 import Paper from "@mui/material/Paper";
 import {post} from "../../request";
 import {useNavigate} from "react-router-dom";

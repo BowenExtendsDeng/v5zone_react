@@ -38,24 +38,25 @@ const drawerWidth = 240;
 
 function Homepage() {
 
-    useEffect(()=>{
+    useEffect(() => {
         const token = localStorage.getItem("v5_token");
-        if(token === ""){
+        if (token === "") {
             navigate("/login/auth")
         }
         post("/member/name",
-            localStorage.getItem("v5_id")).then(res => {}
-        ).catch(()=> {
-                alert("登录信息过期，请重新登录")
-                navigate("/login/auth")
+            localStorage.getItem("v5_id")).then(res => {
+            }
+        ).catch(() => {
+            alert("登录信息过期，请重新登录")
+            navigate("/login/auth")
         });
         post("/auth/is_monitor", localStorage.getItem("v5_id"))
             .then(res => {
                 setIsMonitor(res.data);
-        })
+            })
     })
 
-    const [isMonitor, setIsMonitor] = useState(false);
+    const [isMonitor, setIsMonitor] = useState("COMMON");
 
     const [showDraw, setShowDraw] = useState(false);
 
@@ -133,22 +134,19 @@ function Homepage() {
                             >
                                 <AddPhotoAlternateIcon/>
                             </IconButton>
-                            {isMonitor ?
-                                <IconButton
-                                    sx={{
-                                        position: "absolute",
-                                        right: 100
-                                    }}
-                                    onClick={() => {
-                                        navigate('/homepage/manage');
-                                        handleDrawerClose();
-                                    }}
-                                >
-                                    <ManageAccountsIcon/>
-                                </IconButton>
-                                :
-                                <div/>
-                            }
+                            <IconButton
+                                disabled={isMonitor === "COMMON"}
+                                sx={{
+                                    position: "absolute",
+                                    right: 100
+                                }}
+                                onClick={() => {
+                                    navigate('/homepage/manage');
+                                    handleDrawerClose();
+                                }}
+                            >
+                                <ManageAccountsIcon/>
+                            </IconButton>
                         </Toolbar>
                     </AppBar>
                 </Box>
@@ -393,22 +391,19 @@ function Homepage() {
                             >
                                 <AddPhotoAlternateIcon/>
                             </IconButton>
-                            {isMonitor ?
-                                <IconButton
-                                    sx={{
-                                        position: "absolute",
-                                        right: 100
-                                    }}
-                                    onClick={() => {
-                                        navigate('/homepage/manage');
-                                        handleDrawerClose();
-                                    }}
-                                >
-                                    <ManageAccountsIcon/>
-                                </IconButton>
-                                :
-                                <div/>
-                            }
+                            <IconButton
+                                disabled={isMonitor === "COMMON"}
+                                sx={{
+                                    position: "absolute",
+                                    right: 100
+                                }}
+                                onClick={() => {
+                                    navigate('/homepage/manage');
+                                    handleDrawerClose();
+                                }}
+                            >
+                                <ManageAccountsIcon/>
+                            </IconButton>
                         </Toolbar>
                         <Divider/>
                         <Outlet/>
