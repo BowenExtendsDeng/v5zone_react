@@ -13,15 +13,20 @@ import Album from "../pages/Homepage/Album"
 import MyAlbum from "../pages/Homepage/MyAlbum"
 import Budget from "../pages/Homepage/Budget"
 import Manage from "../pages/Homepage/Manage"
+import MdReader from "../pages/Homepage/MdReader"
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
     {
-        path:'/homepage',
-        element:<Homepage/>,
+        path: '/homepage',
+        element: <Homepage/>,
         children: [
             {
                 path: 'manage',
                 element: <Manage/>
+            },
+            {
+                path: 'md',
+                element: <MdReader/>
             },
             {
                 path: '',
@@ -59,12 +64,12 @@ export default [
 
     },
     {
-        path:'/login',
+        path: '/login',
         element: <Login/>,
-        children:[
+        children: [
             {
-                path:'auth',
-                element:<LoginForm/>
+                path: 'auth',
+                element: <LoginForm/>
             },
             {
                 path: 'reset_password',
@@ -77,7 +82,7 @@ export default [
         ]
     },
     {
-        path:"/",
+        path: "/",
         element: <Navigate to="/homepage"/>
     }
 ]

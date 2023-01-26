@@ -35,9 +35,9 @@ function SetProfile(){
                     }}
                     variant="contained"
                     onClick={() => {
-                        alert('bye')
+                        alert('公测版本暂不开放')
                     }}>
-                    查看个人资料
+                    修改个人资料
                 </Button>
             </Box>
         </Box>

@@ -147,6 +147,7 @@ function LoginForm() {
                     </Grid>
                     <Grid>
                         <Button
+                            disabled={true}
                             sx={{
                                 fontWeight: "bold",
                                 font: 18,
@@ -163,6 +164,7 @@ function LoginForm() {
                     </Grid>
                     <Grid>
                         <Button
+                            disabled={true}
                             sx={{
                                 fontWeight: "bold",
                                 font: 18,

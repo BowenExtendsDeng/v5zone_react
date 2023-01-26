@@ -12,12 +12,15 @@ import {
     Typography
 } from "@mui/material";
 import {post} from "../../request";
+import {useNavigate} from "react-router-dom";
 
 function News(props) {
     const {imageUrl, title, fileLink, pubDate} = props;
 
+    const navigate = useNavigate()
+
     function handleRead() {
-        alert("click")
+        navigate("/homepage/md?fileLink=" + fileLink + "&darkMode=false");
     }
 
     return (
