@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import {
     Box,
@@ -10,9 +10,24 @@ import {
 import Admission from "../../components/Homepage/Manage/Admission"
 import POI from "../../components/Homepage/Manage/POI"
 import Article from "../../components/Homepage/Manage/Article"
+import {post} from "../../request";
 
 function Manage() {
     const isDesktop = JudgeDevice()
+
+    const [isVice, setVice] = useState(false);
+
+
+    function init(){
+        post("/auth/is_monitor", localStorage.getItem("v5_id"))
+            .then(res => {
+                setVice(res.data === "VICE_CAPTAIN");
+            })
+    }
+
+    useEffect(()=>{
+        init();
+    },[])
 
     return (
         <Box>
@@ -32,7 +47,7 @@ function Manage() {
                 <Grid container spacing={2} align={"center"}>
                     <Grid xs={1}></Grid>
                     <Grid xs={10} align={"center"}>
-                        <Admission/>
+                        {isVice ?  <Admission/> : <div/>}
                     </Grid>
                     <Grid xs={1}></Grid>
                     <Grid xs={1}></Grid>
@@ -49,7 +64,7 @@ function Manage() {
                 :
                 <Stack align={"center"}>
                     <Divider/>
-                    <Admission/>
+                    {isVice ?  <Admission/> : <div/>}
                     <Divider/>
                     <Article/>
                     <Divider/>

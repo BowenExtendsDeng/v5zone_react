@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, coyWithoutShadows, darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import {Box, Button, Stack} from "@mui/material";
+import {Box, Button, Grid, Stack} from "@mui/material";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
+import {JudgeDevice} from "../../components/templates/JudgeDevice";
 
 
 const them = {
@@ -13,6 +14,8 @@ const them = {
 }
 
 function MdReader() {
+
+    const isDesktop = JudgeDevice()
 
     const [search, setSearch] = useSearchParams()
 
@@ -60,30 +63,67 @@ function MdReader() {
                     }}
                 >返回公告栏</Button>
             </Box>
-            <ReactMarkdown
-                components={{
-                    code({ node, inline, className, children, ...props }) {
-                        const match = /language-(\w+)/.exec(className || '');
-                        return !inline && match ? (
-                            <SyntaxHighlighter
-                                showLineNumbers={true}
-                                style={darkMode ? them.dark : them.light}
-                                language={match[1]}
-                                PreTag='div'
-                                {...props}
-                            >
-                                {String(children).replace(/\n$/, '')}
-                            </SyntaxHighlighter>
-                        ) : (
-                            <code className={className} {...props}>
-                                {children}
-                            </code>
-                        );
-                    }
-                }}
-            >
-                {textContent}
-            </ReactMarkdown>
+            {isDesktop ?
+                <Grid container={2}>
+                    <Grid xs={2}>
+                    </Grid>
+                    <Grid xs={8}>
+                        <ReactMarkdown
+                            components={{
+                                code({ node, inline, className, children, ...props }) {
+                                    const match = /language-(\w+)/.exec(className || '');
+                                    return !inline && match ? (
+                                        <SyntaxHighlighter
+                                            showLineNumbers={true}
+                                            style={darkMode ? them.dark : them.light}
+                                            language={match[1]}
+                                            PreTag='div'
+                                            {...props}
+                                        >
+                                            {String(children).replace(/\n$/, '')}
+                                        </SyntaxHighlighter>
+                                    ) : (
+                                        <code className={className} {...props}>
+                                            {children}
+                                        </code>
+                                    );
+                                }
+                            }}
+                        >
+                            {textContent}
+                        </ReactMarkdown>
+                    </Grid>
+                    <Grid xs={2}>
+
+                    </Grid>
+                </Grid>
+                :
+                <ReactMarkdown
+                    components={{
+                        code({ node, inline, className, children, ...props }) {
+                            const match = /language-(\w+)/.exec(className || '');
+                            return !inline && match ? (
+                                <SyntaxHighlighter
+                                    showLineNumbers={true}
+                                    style={darkMode ? them.dark : them.light}
+                                    language={match[1]}
+                                    PreTag='div'
+                                    {...props}
+                                >
+                                    {String(children).replace(/\n$/, '')}
+                                </SyntaxHighlighter>
+                            ) : (
+                                <code className={className} {...props}>
+                                    {children}
+                                </code>
+                            );
+                        }
+                    }}
+                >
+                    {textContent}
+                </ReactMarkdown>
+            }
+
         </Stack>
 
     );

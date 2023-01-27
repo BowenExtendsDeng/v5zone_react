@@ -6,8 +6,8 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
-     MenuItem,
+    DialogTitle, Grid,
+    MenuItem,
     Table,
     TableBody,
     TableCell,
@@ -157,15 +157,6 @@ function Budget() {
                     }}
                 >经费报销</Typography>
             }
-            <Button
-                variant="contained"
-                sx={{
-                    margin: 2,
-                    marginRight: 3,
-                    float: "right",
-                }}
-                onClick={handleClickOpen}
-            >新建申请</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -233,51 +224,61 @@ function Budget() {
                     }>确认申请</Button>
                 </DialogActions>
             </Dialog>
-            <TextField
-                disabled={true}
-                id="类型筛选"
-                select
-                label="类型筛选"
-                defaultValue="全部"
-                size="small"
-                sx={{
-                    margin: 2,
-                    width: 100,
-                }}
-            >
-                {method.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
-            <TextField
-                disabled={true}
-                id="时间筛选"
-                select
-                label="时间筛选"
-                defaultValue= "全部"
-                size="small"
-                sx={{
-                    margin: 2,
-                    width: 100,
-                }}
-            >
-                {time.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
+            <Grid container spacing={1} sx={{textAlign:"center",marginY: 3}}>
+                <Grid xs={4}>
+                    <TextField
+                        disabled={true}
+                        id="类型筛选"
+                        select
+                        label="类型筛选"
+                        defaultValue="全部"
+                        size="small"
+                        sx={{
+                        }}
+                    >
+                        {method.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid xs={4}>
+                    <TextField
+                        disabled={true}
+                        id="时间筛选"
+                        select
+                        label="时间筛选"
+                        defaultValue= "全部"
+                        size="small"
+                        sx={{
+                        }}
+                    >
+                        {time.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid xs={4}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                        }}
+                        onClick={handleClickOpen}
+                    >新建申请</Button>
+                </Grid>
+            </Grid>
             <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
                             <TableCell />
+                            {isDesktop ? <TableCell align="center">交易编号</TableCell> : <div/>}
                             <TableCell align="center">申请项</TableCell>
                             <TableCell align="center">类型</TableCell>
                             <TableCell align="center">金额</TableCell>
-                            <TableCell align="center">阶段</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

@@ -150,6 +150,7 @@ const method = [
 ];
 
 function MyAlbum() {
+    const navigate = useNavigate()
     const [methodState, setMethodState] = useState("公开上墙")
     const fileInputChange = (event) => {
         const newFile = event.target.files[0];
@@ -214,7 +215,7 @@ function MyAlbum() {
 
         upload(formData);
 
-        init();
+        navigate(0)
         handleClose();
     }
 

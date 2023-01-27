@@ -25,19 +25,19 @@ export default function Admission() {
     const [isVice, setVice] = useState(false);
 
     function init() {
-        post("/transaction/get_admission_needed_list",
-            localStorage.getItem("v5_id")).then(res => {
-            console.log(res);
-            if (res.status === 200) {
-                if (res.data.records !== null) {
-                    setRenderRows(res.data.records);
-                }
-            }
-        })
         post("/auth/is_monitor", localStorage.getItem("v5_id"))
             .then(res => {
                 setVice(res.data === "VICE_CAPTAIN");
             })
+        post("/transaction/get_admission_needed_list",
+            localStorage.getItem("v5_id")).then(res => {
+            console.log(res);
+            if (res.status === 200) {
+                if (res.data.records !== "") {
+                    setRenderRows(res.data.records);
+                }
+            }
+        })
     }
 
     useEffect(() => {

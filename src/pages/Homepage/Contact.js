@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Box,
+    Box, Grid,
     MenuItem,
 
     TextField,
@@ -92,63 +92,68 @@ function Contact() {
                         }}
                     >组员联系方式</Typography>
                 }
-                <TextField
-                    id="届次筛选"
-                    select
-                    label="届次筛选"
-                    defaultValue= {localStorage
-                        .getItem("v5_contact_session")}
-                    size="small"
-                    sx={{
-                        margin: 2,
-                        width: 100,
-                    }}
-                    onChange={onMethodChanged}
-                >
-                    {method.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    id="学院筛选"
-                    select
-                    label="学院筛选"
-                    defaultValue={localStorage
-                        .getItem("v5_contact_college")}
-                    size="small"
-                    sx={{
-                        margin: 2,
-                        width: 100,
-                    }}
-                    onChange={onSchoolChanged}
-                >
-                    {school.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    id="技术组别"
-                    select
-                    label="技术组别"
-                    defaultValue={localStorage
-                        .getItem("v5_contact_tech")}
-                    size="small"
-                    sx={{
-                        margin: 2,
-                        width: 100
-                    }}
-                    onChange={onTechGroupChanged}
-                >
-                    {techGroup.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                <Grid container spacing={1}>
+                    <Grid xs={4}>
+                        <TextField
+                            id="届次筛选"
+                            select
+                            label="届次筛选"
+                            defaultValue= {localStorage
+                                .getItem("v5_contact_session")}
+                            size="small"
+                            sx={{
+                                margin:2
+                            }}
+                            onChange={onMethodChanged}
+                        >
+                            {method.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    <Grid xs={4}>
+                        <TextField
+                            id="学院筛选"
+                            select
+                            label="学院筛选"
+                            defaultValue={localStorage
+                                .getItem("v5_contact_college")}
+                            size="small"
+                            sx={{
+                                margin:2
+                            }}
+                            onChange={onSchoolChanged}
+                        >
+                            {school.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    <Grid xs={4}>
+                        <TextField
+                            id="技术组别"
+                            select
+                            label="技术组别"
+                            defaultValue={localStorage
+                                .getItem("v5_contact_tech")}
+                            size="small"
+                            sx={{
+                                margin:2
+                            }}
+                            onChange={onTechGroupChanged}
+                        >
+                            {techGroup.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Grid>
+                </Grid>
             </Box>
             <ContactRows/>
         </Box>

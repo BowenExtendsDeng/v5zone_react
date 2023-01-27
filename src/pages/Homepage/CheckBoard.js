@@ -65,9 +65,11 @@ function News(props) {
 
 function CheckBoard() {
 
-    const isDesktop = JudgeDevice()
+    const navigate = useNavigate();
 
-    const [renderRows, setRenderRows] = useState([])
+    const isDesktop = JudgeDevice();
+
+    const [renderRows, setRenderRows] = useState([]);
 
     function init() {
         post("/markdown/publish",
@@ -79,8 +81,9 @@ function CheckBoard() {
                     option.pubDate = option.pubDate.split("T")[0];
                 })
                 setRenderRows(temp);
-
             }
+        }).catch(() => {
+            navigate("/login/auth")
         })
     }
 

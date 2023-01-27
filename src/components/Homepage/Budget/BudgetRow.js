@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {
     Box, Button,
     Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    Divider,
+    Divider, Grid,
     IconButton, Stack,
     Table,
     TableBody,
@@ -18,6 +18,7 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {post} from "../../../request";
+import {JudgeDevice} from "../../templates/JudgeDevice";
 
 export default function BudgetRow(props) {
     const navigate = useNavigate()
@@ -103,6 +104,7 @@ export default function BudgetRow(props) {
         setFile(event.target.files[0]);
     }
 
+    const isDesktop = JudgeDevice();
     return (
         <React.Fragment>
             <Dialog
@@ -158,43 +160,12 @@ export default function BudgetRow(props) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
+                {isDesktop ? <TableCell align="center">{row.id}</TableCell> : <div/>}
                 <TableCell component="th" scope="row"  align="center">
                     {row.intention}
                 </TableCell>
                 <TableCell align="center">{row.type}</TableCell>
                 <TableCell align="center">{row.cost}</TableCell>
-                <TableCell align="center">
-                    <Button
-                        disabled={row.stage !== 1}
-                        variant="outlined"
-                        value={row.id}
-                        onClick={clickStop}
-                        sx={{
-                            backgroundColor:"#f6d3d3",
-                            marginX:1,
-                            fontWeight: "bold",
-                    }}
-                    >撤销</Button>
-                    <Button
-                        disabled={row.stage !== 2 && row.stage !== 3}
-                        variant="outlined"
-                        onClick={clickUpload}
-                        sx={{
-                            backgroundColor:"#d0eac5",
-                            marginX:1,
-                            fontWeight: "bold",
-                    }}
-                    >上传发票</Button>
-                    <Button
-                        disabled={!(row.stage > 2
-                            && row.type === "支出" && row.cost >=100)}
-                        variant="outlined"
-                        value={row.fileName}
-                        onClick={clickDownload}
-                    >
-                        查看发票
-                    </Button>
-                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -203,7 +174,47 @@ export default function BudgetRow(props) {
                             <Typography variant="h6" gutterBottom component="div">
                                 申请项细节
                             </Typography>
+                            <Grid container spacing={1} sx={{margin:1,textAlign:"center"}}>
+                                <Grid xs={4}>
+                                    <Button
+                                        disabled={row.stage !== 1}
+                                        variant="outlined"
+                                        value={row.id}
+                                        onClick={clickStop}
+                                        sx={{
+                                            backgroundColor:"#f6d3d3",
+                                            marginX:1,
+                                            fontWeight: "bold",
+                                        }}
+                                    >撤销</Button>
+                                </Grid>
 
+                                <Grid xs={4}>
+                                    <Button
+                                        disabled={row.stage !== 2 && row.stage !== 3}
+                                        variant="outlined"
+                                        onClick={clickUpload}
+                                        sx={{
+                                            backgroundColor:"#d0eac5",
+                                            marginX:1,
+                                            fontWeight: "bold",
+                                        }}
+                                    >上传发票</Button>
+                                </Grid>
+
+                                <Grid xs={4}>
+                                    <Button
+                                        disabled={!(row.stage > 2
+                                            && row.type === "支出" && row.cost >=100)}
+                                        variant="outlined"
+                                        value={row.fileName}
+                                        onClick={clickDownload}
+                                    >
+                                        查看发票
+                                    </Button>
+                                </Grid>
+
+                            </Grid>
                             <MyStepper cost={row.cost}
                                        type={row.type}
                                        stage={row.stage}/>

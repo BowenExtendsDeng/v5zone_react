@@ -13,7 +13,7 @@ function Login() {
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundImage: "url('https://img1.imgtp.com/2023/01/20/KLLvT9x1.jpeg')",
+        backgroundImage: "url('https://tomcat-oss.oss-cn-beijing.aliyuncs.com/login_desktop.jpg')",
     }
 
     const MOBILE_CSS = {
@@ -24,7 +24,7 @@ function Login() {
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundImage: "url('https://img1.imgtp.com/2023/01/20/fcwq9kLj.jpeg')",
+        backgroundImage: "url('https://tomcat-oss.oss-cn-beijing.aliyuncs.com/login_mobile.jpg')",
     }
 
     return (

@@ -4,8 +4,8 @@
 import axios from "axios";
 
 axios.defaults.timeout = 100000;
-axios.defaults.baseURL = "http://localhost:8849";
-
+axios.defaults.baseURL = "https://datasource.npu5v5.cn:8849";
+//axios.defaults.baseURL = "http://localhost:8849"
 
 
 /**
