@@ -4,12 +4,12 @@ import {
     Box,
     Button,
     FormControl,
+    Grid,
     IconButton,
     InputAdornment,
     InputLabel,
     MenuItem,
     OutlinedInput,
-    Stack,
     TextField,
     Typography
 } from "@mui/material";
@@ -36,37 +36,37 @@ function Registry() {
         <Box
             sx={{
                 width: 1160,
-                height: 500,
+                height: 560,
                 backgroundColor: '#b7bcc3',
                 opacity: 0.90,
                 borderRadius: 5,
             }}
         >
-            <Stack>
-                <Box sx={{
-                    marginRight: 2
-                }}>
-                    <Typography
-                        sx={{
-                            margin: 3,
-                            textAlign: "center",
-                            fontFamily: "黑体",
-                            fontWeight: "bold",
-                            fontSize: 24,
-                        }}
-                    >
-                        <img src={require("../../assets/v5logo.png")}
-                             style={{
-                                 width: 70,
-                                 height: 30,
-                                 marginRight: 10,
-                             }}
-                             alt={'v5logo'}>
-                        </img>
-                        V5 Zone 注册
-                    </Typography>
-                </Box>
-                <Box>
+            <Box sx={{
+                marginRight: 2
+            }}>
+                <Typography
+                    sx={{
+                        margin: 3,
+                        textAlign: "center",
+                        fontFamily: "黑体",
+                        fontWeight: "bold",
+                        fontSize: 24,
+                    }}
+                >
+                    <img src={require("../../assets/v5logo.png")}
+                         style={{
+                             width: 70,
+                             height: 30,
+                             marginRight: 10,
+                         }}
+                         alt={'v5logo'}>
+                    </img>
+                    V5 Zone 注册
+                </Typography>
+            </Box>
+            <Grid container spacing={1}>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -76,15 +76,19 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
-                        label="录取验证码"
+                        label="注册验证码"
                         sx={{
                             margin: 3,
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <FormControl
                         required={true}
                         sx={{
@@ -110,6 +114,8 @@ function Registry() {
                             label="设置密码"
                         />
                     </FormControl>
+                </Grid>
+                <Grid xs={3}>
                     <FormControl
                         required={true}
                         sx={{
@@ -135,13 +141,8 @@ function Registry() {
                             label="再次输入密码"
                         />
                     </FormControl>
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}
-                >
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -151,6 +152,8 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -160,6 +163,8 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -169,6 +174,8 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         id="outlined-required"
                         label="身份证号（用于报名比赛）"
@@ -177,21 +184,16 @@ function Registry() {
                             height: 30
                         }}
                     />
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}
-                >
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         id="outlined-select-currency"
                         select
-                        label="Select"
+                        label="学院"
                         defaultValue="计算机学院"
                         sx={{
                             marginTop: 3,
-                            width: 220,
+                            width: "81%",
                             marginLeft: 3,
                         }}
                     >
@@ -199,7 +201,7 @@ function Registry() {
                             <MenuItem
                                 key={option.value}
                                 value={option.value}
-                                sx = {{
+                                sx={{
                                     overflow: true,
                                 }}
                             >
@@ -208,6 +210,60 @@ function Registry() {
                             </MenuItem>
                         ))}
                     </TextField>
+                </Grid>
+                <Grid xs={3}>
+                    <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="性别"
+                        defaultValue="计算机学院"
+                        sx={{
+                            marginTop: 3,
+                            width: "81%",
+                            marginLeft: 3,
+                        }}
+                    >
+                        {college.map((option) => (
+                            <MenuItem
+                                key={option.value}
+                                value={option.value}
+                                sx={{
+                                    overflow: true,
+                                }}
+                            >
+                                {option.label}
+
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid xs={3}>
+                    <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="技术组别"
+                        defaultValue="计算机学院"
+                        sx={{
+                            marginTop: 3,
+                            width: "81%",
+                            marginLeft: 3,
+                        }}
+                    >
+                        {college.map((option) => (
+                            <MenuItem
+                                key={option.value}
+                                value={option.value}
+                                sx={{
+                                    overflow: true,
+                                }}
+                            >
+                                {option.label}
+
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -215,9 +271,10 @@ function Registry() {
                         sx={{
                             margin: 3,
                             height: 30,
-                            marginLeft: 6.5,
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -227,6 +284,8 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -236,14 +295,8 @@ function Registry() {
                             height: 30
                         }}
                     />
-                </Box>
-
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}
-                >
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -253,6 +306,8 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -262,6 +317,8 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -271,6 +328,8 @@ function Registry() {
                             height: 30
                         }}
                     />
+                </Grid>
+                <Grid xs={3}>
                     <TextField
                         required
                         id="outlined-required"
@@ -280,9 +339,18 @@ function Registry() {
                             height: 30
                         }}
                     />
-                </Box>
-
-                <Box sx={{textAlign: "center"}}>
+                </Grid>
+                <Grid xs={3}>
+                </Grid>
+                <Grid xs={3}>
+                </Grid>
+                <Grid xs={4}>
+                </Grid>
+                <Grid xs={4}
+                      sx={{
+                          textAlign: "center"
+                      }}
+                >
                     <Button
                         sx={{
                             margin: 3,
@@ -291,7 +359,6 @@ function Registry() {
                         variant="contained"
                     > 确认
                     </Button>
-
                     <Button
                         sx={{
                             margin: 3,
@@ -303,8 +370,10 @@ function Registry() {
                         }}
                     >返回
                     </Button>
-                </Box>
-            </Stack>
+                </Grid>
+                <Grid xs={4}>
+                </Grid>
+            </Grid>
         </Box>
     );
 

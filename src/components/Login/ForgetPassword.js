@@ -7,13 +7,14 @@ import {
     IconButton,
     InputAdornment,
     InputLabel,
-    OutlinedInput, Snackbar,
+    OutlinedInput,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
+import {post} from "../../request";
 
 function CountDown(props) {
     const { mss } = props;
@@ -37,43 +38,62 @@ function CountDown(props) {
     );
 }
 function LoginForm() {
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [showPasswordAgain, setShowPasswordAgain] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
-    const [sendState, setSendState] = React.useState(false);
-    const [sendButtonState, setSendButtonState] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordAgain, setShowPasswordAgain] = useState(false);
+    const [sendButtonState, setSendButtonState] = useState(false);
+    const [email, setEmail] = useState("");
+    const [code, setCode] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordAgain, setPasswordAgain] = useState("");
 
     const onClickSend = () => {
-        setSendState(() => true);
-        setOpen(true);
-        setSendButtonState(() => true);
+        localStorage.setItem("v5_token", "undefined")
+        post("/auth/send_code", {
+            id: email,
+            message: "重置密码",
+        }).then((res=>{
+            if(res.status === 200){
+                alert("发送成功，请注意查收");
+            }
+        })).catch(()=>{
+            alert("发送失败，请注意学号的有效性以及当前网络状态");
+        })
+        setSendButtonState(true);
         setTimeout(function(){
-            setSendButtonState(() => false);
+            setSendButtonState(false);
         },30 * 1000)
 
     };
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
 
     const navigate = useNavigate();
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowPassword = () =>
+        setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
 
-    const handleClickShowPasswordAgain = () => setShowPasswordAgain((show) => !show);
+    const handleClickShowPasswordAgain = () =>
+        setShowPasswordAgain((show) => !show);
 
     const handleMouseDownPasswordAgain = (event) => {
         event.preventDefault();
     };
 
     const onClickYes =()=>{
-        navigate('../auth');
+        localStorage.setItem("v5_token", "undefined")
+        post("/auth/external_reset_password", {
+            id: email,
+            password: password,
+            code: code,
+        }).then((res=>{
+            if(res.status === 200){
+                alert("修改成功");
+                navigate('../auth');
+            }
+        })).catch(()=>{
+            alert("修改失败，请检查网络状态或者验证码是否正确");
+        })
     }
 
     return (
@@ -114,10 +134,14 @@ function LoginForm() {
                     <TextField
                         required
                         id="outlined-required"
-                        label="你的邮箱"
+                        label="你的学号"
                         sx={{
                             margin: 3,
                             height: 30,
+                        }}
+                        value={email}
+                        onChange={(event)=>{
+                            setEmail(event.target.value)
                         }}
                     />
                 <Box>
@@ -129,6 +153,10 @@ function LoginForm() {
                             margin: 3,
                             height: 30,
                             width: 150
+                        }}
+                        value={code}
+                        onChange={(event)=>{
+                            setCode(event.target.value)
                         }}
                     />
                     {sendButtonState ?
@@ -151,18 +179,13 @@ function LoginForm() {
                             onClick={onClickSend}
                         >发送验证码</Button>
                     }
-                    <Snackbar
-                        open={open}
-                        autoHideDuration={6000}
-                        onClose={handleClose}
-                    >
-                        <Alert severity={sendState ? "success" : "error"} sx={{ width: '100%' }}>
-                            {sendState ? "邮件已发送到你的邮箱" : "邮件发送失败"}
-                        </Alert>
-                    </Snackbar>
                 </Box>
                 <FormControl
                     required={true}
+                    value={password}
+                    onChange={(event)=>{
+                        setPassword(event.target.value)
+                    }}
                     sx={{
                         margin: 3,
                         height: 30,
@@ -188,6 +211,10 @@ function LoginForm() {
                 </FormControl>
                 <FormControl
                     required={true}
+                    value={passwordAgain}
+                    onChange={(event)=>{
+                        setPasswordAgain(event.target.value)
+                    }}
                     sx={{
                         margin: 3,
                         height: 30,
