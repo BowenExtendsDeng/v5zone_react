@@ -34,7 +34,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import {post} from "../request";
 
-const drawerWidth = 240;
+const drawerWidth = "16%";
 
 function Homepage() {
 

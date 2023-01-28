@@ -1,3 +1,6 @@
+import {MenuItem} from "@mui/material";
+import React from "react";
+
 export default [
     {
         value: '计算机学院',

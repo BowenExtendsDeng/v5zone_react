@@ -181,7 +181,7 @@ function LoginForm() {
                         sx={{
                             margin: 3,
                             textAlign: "center",
-                            width: 120
+                            width: 120,
                         }}
                         variant="contained"
                         onClick={onClickYes}
@@ -190,7 +190,8 @@ function LoginForm() {
                         sx={{
                             margin: 3,
                             textAlign: "center",
-                            width: 120
+                            width: 120,
+                            fontWeight: "bold",
                         }}
                         disabled={true}
                         variant="outlined"

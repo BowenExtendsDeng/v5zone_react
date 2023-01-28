@@ -6,6 +6,7 @@ import {Box, Button, Grid, Stack} from "@mui/material";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
+import gfm from "remark-gfm";
 
 
 const them = {
@@ -54,14 +55,14 @@ function MdReader() {
                 <Button
                     variant={"outlined"}
                     onClick={()=>{
-                        navigate('/homepage');
+                        navigate(-1);
                     }}
                     sx={{
                         width:140,
                         margin:2,
                         fontWeight: "bold",
                     }}
-                >返回公告栏</Button>
+                >返回上一级</Button>
             </Box>
             {isDesktop ?
                 <Grid container={2}>
@@ -69,6 +70,7 @@ function MdReader() {
                     </Grid>
                     <Grid xs={8}>
                         <ReactMarkdown
+                            remarkPlugins={[gfm]}
                             components={{
                                 code({ node, inline, className, children, ...props }) {
                                     const match = /language-(\w+)/.exec(className || '');

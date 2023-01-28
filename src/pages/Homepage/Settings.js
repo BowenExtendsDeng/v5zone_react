@@ -15,6 +15,9 @@ import {useNavigate} from "react-router-dom";
 import {post} from "../../request";
 
 function SetProfile(){
+    const navigate = useNavigate();
+
+    const isDesktop = JudgeDevice();
     return(
         <Box>
             <Box>
@@ -35,7 +38,11 @@ function SetProfile(){
                     }}
                     variant="contained"
                     onClick={() => {
-                        alert('公测版本暂不开放')
+                        if(isDesktop){
+                            navigate('/homepage/profile');
+                        }else {
+                            alert("该功能仅支持桌面端设备操作");
+                        }
                     }}>
                     修改个人资料
                 </Button>

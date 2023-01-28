@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Alert,
     Box,
     Button,
     FormControl,
@@ -17,13 +16,14 @@ import {useNavigate} from "react-router-dom";
 import {post} from "../../request";
 
 function CountDown(props) {
-    const { mss } = props;
+    const {mss} = props;
 
     const [time, setTime] = useState(mss);
 
     useEffect(() => {
         const tick = setInterval(() => {
             setTime(time - 1);
+            localStorage.setItem("v5_timer", time.toString());
         }, 1000);
 
         console.log("tick", tick);
@@ -33,11 +33,12 @@ function CountDown(props) {
 
     return (
         <Typography sx={{
-            fontSize:14,
+            fontSize: 14,
         }}>{time.toString().padStart(2, "0")}</Typography>
     );
 }
-function LoginForm() {
+
+function ForgetPasswordForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordAgain, setShowPasswordAgain] = useState(false);
     const [sendButtonState, setSendButtonState] = useState(false);
@@ -46,23 +47,33 @@ function LoginForm() {
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
 
+    useEffect(() => {
+        const timeLeft = Number(localStorage.getItem("v5_timer"))
+        if (!isNaN(timeLeft) && timeLeft > 5) {
+            setSendButtonState(true);
+            setTimeout(function () {
+                setSendButtonState(false);
+            }, parseInt(localStorage.getItem("v5_timer")) * 1000)
+        }
+    }, [])
+
     const onClickSend = () => {
         localStorage.setItem("v5_token", "undefined")
         post("/auth/send_code", {
             id: email,
-            message: "重置密码",
-        }).then((res=>{
-            if(res.status === 200){
+            message: "重置密码验证码",
+        }).then((res => {
+            if (res.status === 200) {
                 alert("发送成功，请注意查收");
             }
-        })).catch(()=>{
+            localStorage.setItem("v5_timer", "60");
+            setSendButtonState(true);
+            setTimeout(function () {
+                setSendButtonState(false);
+            }, parseInt(localStorage.getItem("v5_timer")) * 1000)
+        })).catch(() => {
             alert("发送失败，请注意学号的有效性以及当前网络状态");
         })
-        setSendButtonState(true);
-        setTimeout(function(){
-            setSendButtonState(false);
-        },30 * 1000)
-
     };
 
     const navigate = useNavigate();
@@ -80,18 +91,18 @@ function LoginForm() {
         event.preventDefault();
     };
 
-    const onClickYes =()=>{
+    const onClickYes = () => {
         localStorage.setItem("v5_token", "undefined")
         post("/auth/external_reset_password", {
             id: email,
             password: password,
             code: code,
-        }).then((res=>{
-            if(res.status === 200){
+        }).then((res => {
+            if (res.status === 200) {
                 alert("修改成功");
                 navigate('../auth');
             }
-        })).catch(()=>{
+        })).catch(() => {
             alert("修改失败，请检查网络状态或者验证码是否正确");
         })
     }
@@ -130,20 +141,19 @@ function LoginForm() {
                         Zone 重置密码
                     </Typography>
                 </Box>
-
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="你的学号"
-                        sx={{
-                            margin: 3,
-                            height: 30,
-                        }}
-                        value={email}
-                        onChange={(event)=>{
-                            setEmail(event.target.value)
-                        }}
-                    />
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="你的学号"
+                    sx={{
+                        margin: 3,
+                        height: 30,
+                    }}
+                    value={email}
+                    onChange={(event) => {
+                        setEmail(event.target.value)
+                    }}
+                />
                 <Box>
                     <TextField
                         required
@@ -155,7 +165,7 @@ function LoginForm() {
                             width: 150
                         }}
                         value={code}
-                        onChange={(event)=>{
+                        onChange={(event) => {
                             setCode(event.target.value)
                         }}
                     />
@@ -168,7 +178,9 @@ function LoginForm() {
                             disabled="true"
                             variant="contained"
                             onClick={onClickSend}
-                        ><CountDown mss={30}/>s后再试</Button>
+                        ><CountDown
+                            mss={parseInt(localStorage.getItem("v5_timer"))}
+                        />s后再试</Button>
                         :
                         <Button
                             sx={{
@@ -183,7 +195,7 @@ function LoginForm() {
                 <FormControl
                     required={true}
                     value={password}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                         setPassword(event.target.value)
                     }}
                     sx={{
@@ -212,7 +224,7 @@ function LoginForm() {
                 <FormControl
                     required={true}
                     value={passwordAgain}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                         setPasswordAgain(event.target.value)
                     }}
                     sx={{
@@ -251,9 +263,10 @@ function LoginForm() {
                         sx={{
                             margin: 3,
                             textAlign: "center",
+                            fontWeight: "bold",
                         }}
                         variant="outlined"
-                        onClick={()=>{
+                        onClick={() => {
                             navigate('../auth')
                         }}
                     >返回
@@ -265,4 +278,4 @@ function LoginForm() {
 
 }
 
-export default LoginForm;
+export default ForgetPasswordForm;

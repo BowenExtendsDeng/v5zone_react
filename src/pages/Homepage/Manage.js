@@ -10,6 +10,7 @@ import {
 import Admission from "../../components/Homepage/Manage/Admission"
 import POI from "../../components/Homepage/Manage/POI"
 import Article from "../../components/Homepage/Manage/Article"
+import Invite from "../../components/Homepage/Manage/Invite"
 import {post} from "../../request";
 
 function Manage() {
@@ -56,6 +57,11 @@ function Manage() {
                     </Grid>
                     <Grid xs={1}></Grid>
                     <Grid xs={3}></Grid>
+                    <Grid xs={6}>
+                        <Invite></Invite>
+                    </Grid>
+                    <Grid xs={3}></Grid>
+                    <Grid xs={3}></Grid>
                     <Grid xs={6} align={"center"}>
                         <POI/>
                     </Grid>
@@ -67,6 +73,8 @@ function Manage() {
                     {isVice ?  <Admission/> : <div/>}
                     <Divider/>
                     <Article/>
+                    <Divider/>
+                    <Invite/>
                     <Divider/>
                     <POI/>
                     <Divider/>

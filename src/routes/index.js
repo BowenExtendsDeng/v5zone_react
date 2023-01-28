@@ -14,6 +14,8 @@ import MyAlbum from "../pages/Homepage/MyAlbum"
 import Budget from "../pages/Homepage/Budget"
 import Manage from "../pages/Homepage/Manage"
 import MdReader from "../pages/Homepage/MdReader"
+import Profile from "../pages/Homepage/Profile";
+import PublicMdReader from "../components/Login/PublicMdReader";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
     {
@@ -23,10 +25,6 @@ export default [
             {
                 path: 'manage',
                 element: <Manage/>
-            },
-            {
-                path: 'md',
-                element: <MdReader/>
             },
             {
                 path: '',
@@ -60,8 +58,15 @@ export default [
                 path: 'budget',
                 element: <Budget/>
             },
+            {
+                path: "profile",
+                element: <Profile/>
+            },
+            {
+                path: 'md',
+                element: <MdReader/>
+            },
         ]
-
     },
     {
         path: '/login',
@@ -78,7 +83,11 @@ export default [
             {
                 path: 'registry',
                 element: <Registry/>
-            }
+            },
+            {
+                path: 'md',
+                element: <PublicMdReader/>
+            },
         ]
     },
     {
