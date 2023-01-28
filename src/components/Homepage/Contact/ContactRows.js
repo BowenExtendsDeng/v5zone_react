@@ -4,33 +4,34 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "
 import Paper from "@mui/material/Paper";
 import {JudgeDevice} from "../../templates/JudgeDevice";
 
-function ContactRows(){
+function ContactRows() {
     const isDesktop = JudgeDevice();
 
     const [renderRows, setRenderRows] = useState([]);
-    function init(){
+
+    function init() {
         let method = "onServe";
         let school = "all";
         let techGroup = "all";
-        if(localStorage.getItem("v5_contact_session") === "全部"){
+        if (localStorage.getItem("v5_contact_session") === "全部") {
             method = "all";
-        }else if(localStorage.getItem("v5_contact_session") === "现役"){
+        } else if (localStorage.getItem("v5_contact_session") === "现役") {
             method = "onServe";
-        }else if(localStorage.getItem("v5_contact_session") === "同届次"){
+        } else if (localStorage.getItem("v5_contact_session") === "同届次") {
             method = "sameSession";
         }
-        if(localStorage.getItem("v5_contact_tech") === "全部"){
+        if (localStorage.getItem("v5_contact_tech") === "全部") {
             techGroup = "all";
-        }else if(localStorage.getItem("v5_contact_tech") === "机械组"){
+        } else if (localStorage.getItem("v5_contact_tech") === "机械组") {
             techGroup = "mechanic";
-        }else if(localStorage.getItem("v5_contact_tech") === "硬件组"){
+        } else if (localStorage.getItem("v5_contact_tech") === "硬件组") {
             techGroup = "hardware";
-        }else if(localStorage.getItem("v5_contact_tech") === "软件组"){
+        } else if (localStorage.getItem("v5_contact_tech") === "软件组") {
             techGroup = "software";
         }
-        if(localStorage.getItem("v5_contact_college") === "全部"){
+        if (localStorage.getItem("v5_contact_college") === "全部") {
             school = "all";
-        }else if(localStorage.getItem("v5_contact_college") === "同学院"){
+        } else if (localStorage.getItem("v5_contact_college") === "同学院") {
             school = "sameCollege";
         }
         console.log(method + "," + school + "," + techGroup);
@@ -42,17 +43,17 @@ function ContactRows(){
                 collegeSelect: school,
             }).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 setRenderRows(res.data.contactInfo);
             }
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
-    return(
+    return (
         <TableContainer component={Paper}>
             <Table aria-label="simple table">
                 <TableHead>

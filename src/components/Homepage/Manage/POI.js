@@ -2,12 +2,13 @@ import {Button, Stack, Typography} from "@mui/material";
 import React from "react";
 import axios from "axios";
 
-export default function POI(){
+export default function POI() {
 
     const openInNewTab = url => {
         // 👇️ setting target to _blank with window.open
         window.open(url, '_blank', 'noopener,noreferrer');
     };
+
     function handleMembersDownload() {
         const url = axios.defaults.baseURL
             + "/poi/members/members.xlsx"
@@ -26,7 +27,7 @@ export default function POI(){
         openInNewTab(url);
     }
 
-    return(
+    return (
         <Stack>
             <Typography
                 sx={{
@@ -41,7 +42,7 @@ export default function POI(){
             <Button
                 size="large"
                 sx={{
-                    margin:2,
+                    margin: 2,
                     textAlign: "center",
                     fontWeight: "bold",
                 }}
@@ -62,7 +63,7 @@ export default function POI(){
             <Button
                 size="large"
                 sx={{
-                    margin:2,
+                    margin: 2,
                     textAlign: "center",
                     fontWeight: "bold",
                 }}
@@ -83,7 +84,7 @@ export default function POI(){
             <Button
                 size="large"
                 sx={{
-                    margin:2,
+                    margin: 2,
                     textAlign: "center",
                     fontWeight: "bold",
                 }}
@@ -95,7 +96,7 @@ export default function POI(){
             <Button
                 size="large"
                 sx={{
-                    margin:2,
+                    margin: 2,
                     textAlign: "center",
                     fontWeight: "bold",
                 }}

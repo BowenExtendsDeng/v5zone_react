@@ -1,9 +1,17 @@
 import React, {useState} from 'react';
 import {
-    Box, Button,
-    Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    Divider, Grid,
-    IconButton, Stack,
+    Box,
+    Button,
+    Collapse,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
+    Grid,
+    IconButton,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -22,7 +30,7 @@ import {JudgeDevice} from "../../templates/JudgeDevice";
 
 export default function BudgetRow(props) {
     const navigate = useNavigate()
-    const { row } = props;
+    const {row} = props;
 
     const id = row.id;
 
@@ -36,8 +44,8 @@ export default function BudgetRow(props) {
         post("/transaction/admin", {
             "id": id,
             "message": "canceled",
-        }).then(res=>{
-            if(res.status === 200){
+        }).then(res => {
+            if (res.status === 200) {
                 alert("操作成功");
                 navigate(0);
             }
@@ -69,7 +77,7 @@ export default function BudgetRow(props) {
     const [file, setFile] = useState("null")
 
     function handleApply() {
-        if(file === "none"){
+        if (file === "none") {
             alert("请选择一个文件，再上传！");
             return;
         }
@@ -97,7 +105,7 @@ export default function BudgetRow(props) {
 
     const fileInputChange = (event) => {
         const newFile = event.target.files[0];
-        if(newFile.size >= 1048576 * 10){
+        if (newFile.size >= 1048576 * 10) {
             alert("文件不能大于 10M ");
             return;
         }
@@ -146,35 +154,35 @@ export default function BudgetRow(props) {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose2} sx={{marginRight:3, marginBottom: 3}}>取消</Button>
-                    <Button onClick={handleApply} sx={{marginRight:5, marginBottom: 3}}>上传</Button>
+                    <Button onClick={handleClose2} sx={{marginRight: 3, marginBottom: 3}}>取消</Button>
+                    <Button onClick={handleApply} sx={{marginRight: 5, marginBottom: 3}}>上传</Button>
                 </DialogActions>
             </Dialog>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
                         size="small"
                         onClick={() => setOpen(!open)}
                     >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
                     </IconButton>
                 </TableCell>
                 {isDesktop ? <TableCell align="center">{row.id}</TableCell> : <div/>}
-                <TableCell component="th" scope="row"  align="center">
+                <TableCell component="th" scope="row" align="center">
                     {row.intention}
                 </TableCell>
                 <TableCell align="center">{row.type}</TableCell>
                 <TableCell align="center">{row.cost}</TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
+                        <Box sx={{margin: 1}}>
                             <Typography variant="h6" gutterBottom component="div">
                                 申请项细节
                             </Typography>
-                            <Grid container spacing={1} sx={{margin:1,textAlign:"center"}}>
+                            <Grid container spacing={1} sx={{margin: 1, textAlign: "center"}}>
                                 <Grid xs={4}>
                                     <Button
                                         disabled={row.stage !== 1}
@@ -182,8 +190,8 @@ export default function BudgetRow(props) {
                                         value={row.id}
                                         onClick={clickStop}
                                         sx={{
-                                            backgroundColor:"#f6d3d3",
-                                            marginX:1,
+                                            backgroundColor: "#f6d3d3",
+                                            marginX: 1,
                                             fontWeight: "bold",
                                         }}
                                     >撤销</Button>
@@ -195,8 +203,8 @@ export default function BudgetRow(props) {
                                         variant="outlined"
                                         onClick={clickUpload}
                                         sx={{
-                                            backgroundColor:"#d0eac5",
-                                            marginX:1,
+                                            backgroundColor: "#d0eac5",
+                                            marginX: 1,
                                             fontWeight: "bold",
                                         }}
                                     >上传发票</Button>
@@ -205,7 +213,7 @@ export default function BudgetRow(props) {
                                 <Grid xs={4}>
                                     <Button
                                         disabled={!(row.stage > 2
-                                            && row.type === "支出" && row.cost >=100)}
+                                            && row.type === "支出" && row.cost >= 100)}
                                         variant="outlined"
                                         value={row.fileName}
                                         onClick={clickDownload}

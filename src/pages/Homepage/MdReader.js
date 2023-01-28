@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus, coyWithoutShadows, darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {coyWithoutShadows, darcula, vscDarkPlus} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {Box, Button, Grid, Stack} from "@mui/material";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
@@ -34,9 +34,9 @@ function MdReader() {
 
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     // String文本 boolean
 
@@ -54,12 +54,12 @@ function MdReader() {
             <Box>
                 <Button
                     variant={"outlined"}
-                    onClick={()=>{
+                    onClick={() => {
                         navigate(-1);
                     }}
                     sx={{
-                        width:140,
-                        margin:2,
+                        width: 140,
+                        margin: 2,
                         fontWeight: "bold",
                     }}
                 >返回上一级</Button>
@@ -72,7 +72,7 @@ function MdReader() {
                         <ReactMarkdown
                             remarkPlugins={[gfm]}
                             components={{
-                                code({ node, inline, className, children, ...props }) {
+                                code({node, inline, className, children, ...props}) {
                                     const match = /language-(\w+)/.exec(className || '');
                                     return !inline && match ? (
                                         <SyntaxHighlighter
@@ -102,7 +102,7 @@ function MdReader() {
                 :
                 <ReactMarkdown
                     components={{
-                        code({ node, inline, className, children, ...props }) {
+                        code({node, inline, className, children, ...props}) {
                             const match = /language-(\w+)/.exec(className || '');
                             return !inline && match ? (
                                 <SyntaxHighlighter

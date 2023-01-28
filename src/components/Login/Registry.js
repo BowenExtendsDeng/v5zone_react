@@ -170,7 +170,7 @@ function Registry() {
             alert("民族格式有误，应为 1-4位汉字");
             return false;
         }
-        if(!/^[1-9]\d{4,12}$/.test(qq)){
+        if (!/^[1-9]\d{4,12}$/.test(qq)) {
             alert("QQ格式有误，应为 4 - 12位数字");
         }
         return true;
@@ -181,7 +181,7 @@ function Registry() {
         if (!validate()) {
             return;
         }
-        localStorage.setItem("v5_token","undefined");
+        localStorage.setItem("v5_token", "undefined");
         post("/auth/register", {
             id: id,
             name: name,
@@ -203,11 +203,11 @@ function Registry() {
             sex: sex,
             nation: nation,
         }).then((res => {
-            if(res.status === 200){
-                if(res.data.msg === "success"){
+            if (res.status === 200) {
+                if (res.data.msg === "success") {
                     alert("注册成功，点击确认返回登录页");
                     navigate("/login/auth");
-                }else {
+                } else {
                     alert(res.data.msg);
                 }
             }
@@ -406,8 +406,8 @@ function Registry() {
                     <FormControl
                         sx={{
                             marginTop: 3,
-                                width: "82%",
-                                marginLeft: 3,
+                            width: "82%",
+                            marginLeft: 3,
                         }}
                     >
                         <InputLabel id="demo-multiple-name-label">
@@ -707,7 +707,7 @@ function Registry() {
                             fontWeight: "bold",
                         }}
                         variant="outlined"
-                        onClick={()=>{
+                        onClick={() => {
                             navigate("/login/md?fileLink=Privacy.md&darkMode=false")
                         }}
                     > V5 隐私政策

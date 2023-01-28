@@ -47,7 +47,7 @@ function Invite() {
                             height: 30,
                         }}
                         value={email}
-                        onChange={(event)=>{
+                        onChange={(event) => {
                             setEmail(event.target.value)
                         }}
                     />

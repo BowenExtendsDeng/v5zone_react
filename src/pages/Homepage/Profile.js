@@ -4,15 +4,15 @@ import {
     Box,
     Button,
     FormControl,
-    Grid, IconButton,
-    InputAdornment,
-    InputLabel, MenuItem,
-    OutlinedInput, Select,
+    Grid,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Select,
     TextField,
     Typography
 } from "@mui/material";
 import copy from "copy-to-clipboard";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
@@ -140,7 +140,7 @@ function Prize() {
             alert("民族格式有误，应为 1-4位汉字");
             return false;
         }
-        if(!/^[1-9]\d{4,12}$/.test(qq)){
+        if (!/^[1-9]\d{4,12}$/.test(qq)) {
             alert("QQ格式有误，应为 4 - 12位数字");
         }
         return true;
@@ -155,11 +155,11 @@ function Prize() {
         },
     };
 
-    function init(){
+    function init() {
         post("/member/get_member",
             localStorage.getItem("v5_id")
         ).then((res => {
-            if(res.status === 200){
+            if (res.status === 200) {
                 setQq(res.data.qqId);
                 setId(res.data.id);
                 setName(res.data.name);
@@ -175,16 +175,16 @@ function Prize() {
                 setFoodHabit(res.data.foodHabit);
                 setBirthday(res.data.birthday);
                 setTechGroup(res.data.techGroup);
-                if(res.data.sex === "FEMALE"){
+                if (res.data.sex === "FEMALE") {
                     setSex("女");
-                }else {
+                } else {
                     setSex("男");
                 }
-                if(res.data.techGroup === "MECHANIC"){
+                if (res.data.techGroup === "MECHANIC") {
                     setTechGroup("机械组");
-                }else if(res.data.techGroup === "HARDWARE"){
+                } else if (res.data.techGroup === "HARDWARE") {
                     setTechGroup("硬件组");
-                }else{
+                } else {
                     setTechGroup("软件组");
                 }
                 setNation(res.data.nation
@@ -193,9 +193,9 @@ function Prize() {
         }))
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     function onClickConfirm() {
         if (!validate()) {
@@ -220,10 +220,10 @@ function Prize() {
             sex: sex,
             nation: nation,
         }).then((res => {
-            if(res.status === 200){
-                if(res.data.msg === "success"){
+            if (res.status === 200) {
+                if (res.data.msg === "success") {
                     alert("修改成功");
-                }else {
+                } else {
                     alert(res.data.msg);
                 }
             }
@@ -232,31 +232,31 @@ function Prize() {
 
     return (
         <Box>
-                <Typography
-                    align="center"
-                    sx={{
-                        fontFamily: "黑体",
-                        fontSize: 20,
-                        fontWeight: "bold",
-                        height: 32,
-                        marginTop: 2
-                    }}
-                >我的个人信息</Typography>
+            <Typography
+                align="center"
+                sx={{
+                    fontFamily: "黑体",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    height: 32,
+                    marginTop: 2
+                }}
+            >我的个人信息</Typography>
             <Grid container spacing={1}>
                 <Grid xs={4}></Grid>
                 <Grid xs={4} sx={{textAlign: "center"}}>
 
-                        <TextField
-                            disabled={true}
-                            aria-readonly={true}
-                            id="outlined-required"
-                            label="学号"
-                            sx={{
-                                margin: 4,
-                                height: 30,
-                            }}
-                            value={id}
-                        />
+                    <TextField
+                        disabled={true}
+                        aria-readonly={true}
+                        id="outlined-required"
+                        label="学号"
+                        sx={{
+                            margin: 4,
+                            height: 30,
+                        }}
+                        value={id}
+                    />
 
                 </Grid>
                 <Grid xs={3} sx={{
@@ -269,7 +269,7 @@ function Prize() {
                             fontWeight: "bold",
                         }}
                         variant="outlined"
-                        onClick={()=>{
+                        onClick={() => {
                             navigate("/homepage/md?fileLink=Privacy.md&darkMode=false");
                         }}
                     > V5 隐私政策

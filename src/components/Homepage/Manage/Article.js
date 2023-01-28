@@ -1,14 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    Grid, MenuItem,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grid,
+    MenuItem,
     Stack,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField,
+    TableRow,
+    TextField,
     Typography
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -34,24 +41,24 @@ function MarkdownTable() {
     ];
 
     const clickDelete = (event) => {
-        post("/markdown/delete",{
+        post("/markdown/delete", {
             fileLink: event.target.value,
         }).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 alert("操作成功");
                 navigate(0);
             }
         })
     }
 
-    function onMethodChanged (fileLink, isPublished) {
-        post("/markdown/update",{
+    function onMethodChanged(fileLink, isPublished) {
+        post("/markdown/update", {
             fileLink: fileLink,
             isPublished: !isPublished,
         }).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 alert("操作成功");
                 navigate(0);
             }
@@ -62,15 +69,15 @@ function MarkdownTable() {
         post("/markdown/all",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 setRenderRows(res.data.reverse());
             }
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     const openInNewTab = url => {
         // 👇️ setting target to _blank with window.open
@@ -84,7 +91,7 @@ function MarkdownTable() {
         openInNewTab(url);
     }
 
-    return(
+    return (
         <TableContainer component={Paper}>
             <Table aria-label="simple table">
                 <TableHead>
@@ -122,7 +129,7 @@ function MarkdownTable() {
                                             width: 120,
                                         }}
                                         value={row.isPublished ? "发布" : "不发布"}
-                                        onChange={()=>{
+                                        onChange={() => {
                                             onMethodChanged(row.fileLink, row.isPublished);
                                         }}
                                     >
@@ -175,6 +182,7 @@ function Article() {
             label: '发布',
         },
     ];
+
     function upload(formData) {
         fetch(axios.defaults.baseURL + '/markdown/upload', {
             method: 'post',
@@ -202,7 +210,7 @@ function Article() {
 
 
     function handleApply() {
-        if(file === "none"){
+        if (file === "none") {
             alert("请选择一个文件，再上传！");
             return;
         }
@@ -222,11 +230,11 @@ function Article() {
 
     const fileInputChange = (event) => {
         const newFile = event.target.files[0];
-        if(newFile.size >= 1048576 * 10){
+        if (newFile.size >= 1048576 * 10) {
             alert("文件不能大于 10M ");
             return;
         }
-        if(newFile.name.split('.').pop().toLowerCase() !== "md"){
+        if (newFile.name.split('.').pop().toLowerCase() !== "md") {
             alert("上传的文件不是 markdown 形式，系统拒收");
             return;
         }
@@ -338,8 +346,8 @@ function Article() {
 
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleClose} sx={{marginRight:3, marginBottom: 3}}>取消</Button>
-                            <Button onClick={handleApply} sx={{marginRight:5, marginBottom: 3}}>上传</Button>
+                            <Button onClick={handleClose} sx={{marginRight: 3, marginBottom: 3}}>取消</Button>
+                            <Button onClick={handleApply} sx={{marginRight: 5, marginBottom: 3}}>上传</Button>
                         </DialogActions>
                     </Dialog>
                 </Grid>

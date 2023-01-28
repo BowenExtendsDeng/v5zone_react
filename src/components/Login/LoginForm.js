@@ -1,9 +1,11 @@
 import React from 'react';
 import {
-    Alert,
     Box,
-    Button, Checkbox,
-    FormControl, FormControlLabel, Grid,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    Grid,
     IconButton,
     InputAdornment,
     InputLabel,
@@ -33,26 +35,26 @@ function LoginForm() {
         event.preventDefault();
     };
 
-    const onClickYes = () =>{
+    const onClickYes = () => {
         const data = {
-            "id":username,
-            "password":password
+            "id": username,
+            "password": password
         }
 
         localStorage.setItem("v5_token", "undefined")
 
-        post("/auth/authenticate", data).then((res=>{
-            if(res.status === 200){
+        post("/auth/authenticate", data).then((res => {
+            if (res.status === 200) {
                 localStorage.setItem('v5_token', res.data.token);
                 console.log(res.data.token);
                 localStorage.setItem('v5_id', res.data.id);
                 console.log(res.data.id);
-                localStorage.setItem('v5_contact_tech',  "全部");
-                localStorage.setItem('v5_contact_college',  "全部");
+                localStorage.setItem('v5_contact_tech', "全部");
+                localStorage.setItem('v5_contact_college', "全部");
                 localStorage.setItem('v5_contact_session', "现役");
                 navigate("/homepage");
             }
-        })).catch(()=>{
+        })).catch(() => {
             alert("用户名或密码错误！")
         })
     }
@@ -136,7 +138,7 @@ function LoginForm() {
                 >
                     <Grid xs={4}>
                         <FormControlLabel
-                            control={<Checkbox defaultChecked />}
+                            control={<Checkbox defaultChecked/>}
                             label="记住我"
                             sx={{
                                 marginX: 1,
@@ -153,9 +155,9 @@ function LoginForm() {
                             }}
                             variant="text"
                             onClick={() => {
-                                if(isDesktop){
+                                if (isDesktop) {
                                     navigate('../registry')
-                                }else return(
+                                } else return (
                                     alert("该功能仅限桌面端")
                                 )
                             }}

@@ -1,5 +1,4 @@
-
-export function JudgeDevice () {
+export function JudgeDevice() {
     let matcher = navigator.userAgent;
     let os;
     if (!!matcher.match(/compatible/i) || matcher.match(/Windows/i)) {

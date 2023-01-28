@@ -1,16 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 
-import {
-    Box,
-    Card,
-    CardActionArea,
-    CardActions,
-    CardMedia,
-    Grid,
-    Stack,
-    Typography
-} from "@mui/material";
+import {Box, Card, CardActionArea, CardActions, CardMedia, Grid, Stack, Typography} from "@mui/material";
 import {post} from "../../request";
 import {useNavigate} from "react-router-dom";
 
@@ -54,7 +45,7 @@ function News(props) {
                     <Grid xs={3}>
                         <Typography
                             color="text.secondary"
-                            sx={{fontSize: 14,marginTop:2}}
+                            sx={{fontSize: 14, marginTop: 2}}
                         >{pubDate}</Typography>
                     </Grid>
                 </Grid>
@@ -75,7 +66,7 @@ function CheckBoard() {
         post("/markdown/publish",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 let temp = res.data.reverse();
                 temp.map((option) => {
                     option.pubDate = option.pubDate.split("T")[0];
@@ -93,16 +84,16 @@ function CheckBoard() {
 
     return (
         <Box>
-                <Typography
-                    align="center"
-                    sx={{
-                        fontFamily: "黑体",
-                        fontSize: 20,
-                        fontWeight: "bold",
-                        height: 32,
-                        marginTop: 2
-                    }}
-                >公告栏</Typography>
+            <Typography
+                align="center"
+                sx={{
+                    fontFamily: "黑体",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    height: 32,
+                    marginTop: 2
+                }}
+            >公告栏</Typography>
 
             <Box sx={{height: 50}}/>
             {isDesktop ?

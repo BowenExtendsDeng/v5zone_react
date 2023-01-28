@@ -4,11 +4,14 @@ import {
     Box,
     Button,
     CardContent,
-    Dialog, DialogActions,
+    Dialog,
+    DialogActions,
     DialogContent,
-    DialogTitle, Divider,
-    Grid, MenuItem,
-    Stack, TextField,
+    DialogTitle,
+    Divider,
+    Grid,
+    Stack,
+    TextField,
     Typography
 } from "@mui/material";
 import {post} from "../../request";
@@ -20,8 +23,8 @@ function Message(props) {
 
     const navigate = useNavigate();
 
-    const onDelete = () =>{
-        post("/message_board/delete",{
+    const onDelete = () => {
+        post("/message_board/delete", {
             uploader: localStorage.getItem("v5_id"),
             message: message,
             date: date,
@@ -32,7 +35,7 @@ function Message(props) {
         navigate(0);
     }
 
-    return(
+    return (
         <Box sx={{
             margin: 3,
             backgroundColor: "#f1f1f1",
@@ -40,20 +43,20 @@ function Message(props) {
         }}>
             <React.Fragment>
                 <CardContent>
-                    <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
+                    <Typography sx={{fontSize: 16}} color="text.secondary" gutterBottom>
                         {date}
                     </Typography>
-                    <Typography sx={{ fontSize: 18 }} variant="h5" component="div">
+                    <Typography sx={{fontSize: 18}} variant="h5" component="div">
                         {name}
                     </Typography>
-                    <Typography sx={{ fontSize: 20 }} variant="body1" color="text.secondary">
+                    <Typography sx={{fontSize: 20}} variant="body1" color="text.secondary">
                         {message}
                     </Typography>
                     {isMine ?
                         <Button
                             size="small"
                             sx={{
-                                backgroundColor:"#e69191"
+                                backgroundColor: "#e69191"
                             }}
                             variant="contained"
                             onClick={onDelete}
@@ -88,12 +91,12 @@ function MessageBoard() {
     };
 
     const handleApply = () => {
-        post("/message_board/add",{
+        post("/message_board/add", {
             uploader: localStorage.getItem("v5_id"),
             message: msg,
         }).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 alert("添加成功");
                 navigate(0);
             }
@@ -102,32 +105,35 @@ function MessageBoard() {
     };
 
     const navigate = useNavigate()
-    const [messages,setMessages] = useState([]);
-    const [nameFromId,setNameFromId] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [nameFromId, setNameFromId] = useState("");
 
-    function init(){
-        setTimeout(function(){},500);
+    function init() {
+        setTimeout(function () {
+        }, 500);
         post("/message_board/get_all",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 setMessages(res.data.reverse());
-                res.data.map((option)=>{console.log(option.uploader)});
+                res.data.map((option) => {
+                    console.log(option.uploader)
+                });
             }
         });
         post("/member/name",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 setNameFromId(res.data.msg);
                 console.log(nameFromId);
             }
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     const handleOnChange = (event) => {
         setMsg(event.target.value);
@@ -151,10 +157,10 @@ function MessageBoard() {
                 variant="contained"
                 onClick={handleClickOpen}
                 sx={{
-                margin: 2,
-                position: "absolute",
-                right: 20,
-            }}>新建留言</Button>
+                    margin: 2,
+                    position: "absolute",
+                    right: 20,
+                }}>新建留言</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -172,8 +178,8 @@ function MessageBoard() {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{fontSize:16,marginRight:3, marginBottom: 3}}>取消</Button>
-                    <Button onClick={handleApply} sx={{fontSize:16,marginRight:5, marginBottom: 3}}>发布</Button>
+                    <Button onClick={handleClose} sx={{fontSize: 16, marginRight: 3, marginBottom: 3}}>取消</Button>
+                    <Button onClick={handleApply} sx={{fontSize: 16, marginRight: 5, marginBottom: 3}}>发布</Button>
                 </DialogActions>
             </Dialog>
             <Box sx={{height: 50}}/>
@@ -185,7 +191,7 @@ function MessageBoard() {
                                 <Message name={option.uploader}
                                          date={option.date}
                                          message={option.message}
-                                         isMine = {nameFromId === option.uploader}
+                                         isMine={nameFromId === option.uploader}
                                 />
                             </Grid>
                         ))}
@@ -197,7 +203,7 @@ function MessageBoard() {
                         <Message name={option.uploader}
                                  date={option.date}
                                  message={option.message}
-                                 isMine = {nameFromId === option.uploader}
+                                 isMine={nameFromId === option.uploader}
                         />
                     ))}
                 </Stack>

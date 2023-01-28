@@ -6,14 +6,16 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, Grid,
+    DialogTitle,
+    Grid,
     MenuItem,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField,
+    TableRow,
+    TextField,
     Typography
 } from "@mui/material";
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
@@ -42,20 +44,20 @@ function Budget() {
         setApplyAmount(event.target.value);
     }
 
-    function init(){
+    function init() {
         post("/transaction/get_application_list",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 setRenderRows(res.data.records.reverse());
             }
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
         getTele();
-    },[])
+    }, [])
 
     const [open, setOpen] = React.useState(false);
 
@@ -75,11 +77,11 @@ function Budget() {
             amount: applyAmount,
             alipayTelephone: applyTele,
         }
-        post('/transaction/apply',data).then((res)=>{
-            if(res.status === 200 && res.data.msg === "success"){
+        post('/transaction/apply', data).then((res) => {
+            if (res.status === 200 && res.data.msg === "success") {
                 alert("申请成功");
                 navigate(0);
-            }else{
+            } else {
                 alert("申请失败，请检查网络状态");
             }
         })
@@ -130,14 +132,14 @@ function Budget() {
         setApplyTele()
     }
 
-    function getTele(){
+    function getTele() {
         post("/member/tele",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 setApplyTele(res.data.msg);
             }
-        }).catch(()=> {
+        }).catch(() => {
             alert("登录信息过期，请重新登录")
             navigate("/login/auth")
         })
@@ -217,14 +219,14 @@ function Budget() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}
-                            sx={{marginRight:3, marginBottom: 3}
-                    }>取消</Button>
+                            sx={{marginRight: 3, marginBottom: 3}
+                            }>取消</Button>
                     <Button onClick={handleApply}
-                            sx={{marginRight:5, marginBottom: 3}
-                    }>确认申请</Button>
+                            sx={{marginRight: 5, marginBottom: 3}
+                            }>确认申请</Button>
                 </DialogActions>
             </Dialog>
-            <Grid container spacing={1} sx={{textAlign:"center",marginY: 3}}>
+            <Grid container spacing={1} sx={{textAlign: "center", marginY: 3}}>
                 <Grid xs={4}>
                     <TextField
                         disabled={true}
@@ -233,8 +235,7 @@ function Budget() {
                         label="类型筛选"
                         defaultValue="全部"
                         size="small"
-                        sx={{
-                        }}
+                        sx={{}}
                     >
                         {method.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -249,10 +250,9 @@ function Budget() {
                         id="时间筛选"
                         select
                         label="时间筛选"
-                        defaultValue= "全部"
+                        defaultValue="全部"
                         size="small"
-                        sx={{
-                        }}
+                        sx={{}}
                     >
                         {time.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -264,8 +264,7 @@ function Budget() {
                 <Grid xs={4}>
                     <Button
                         variant="contained"
-                        sx={{
-                        }}
+                        sx={{}}
                         onClick={handleClickOpen}
                     >新建申请</Button>
                 </Grid>
@@ -274,7 +273,7 @@ function Budget() {
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
-                            <TableCell />
+                            <TableCell/>
                             {isDesktop ? <TableCell align="center">交易编号</TableCell> : <div/>}
                             <TableCell align="center">申请项</TableCell>
                             <TableCell align="center">类型</TableCell>
@@ -283,7 +282,7 @@ function Budget() {
                     </TableHead>
                     <TableBody>
                         {renderRows.map((row) => (
-                            <BudgetRow key={row.name} row={row} />
+                            <BudgetRow key={row.name} row={row}/>
                         ))}
                     </TableBody>
                 </Table>

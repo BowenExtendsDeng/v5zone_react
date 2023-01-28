@@ -2,8 +2,12 @@ import React, {useState} from 'react';
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import {
     Box,
-    Button, Divider,
-    FormControl, Grid, IconButton, InputAdornment,
+    Button,
+    Divider,
+    FormControl,
+    Grid,
+    IconButton,
+    InputAdornment,
     InputLabel,
     OutlinedInput,
     Stack,
@@ -14,11 +18,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import {useNavigate} from "react-router-dom";
 import {post} from "../../request";
 
-function SetProfile(){
+function SetProfile() {
     const navigate = useNavigate();
 
     const isDesktop = JudgeDevice();
-    return(
+    return (
         <Box>
             <Box>
                 <Typography
@@ -33,14 +37,14 @@ function SetProfile(){
                 </Typography>
                 <Button
                     sx={{
-                        margin:2,
+                        margin: 2,
                         textAlign: "center",
                     }}
                     variant="contained"
                     onClick={() => {
-                        if(isDesktop){
+                        if (isDesktop) {
                             navigate('/homepage/profile');
-                        }else {
+                        } else {
                             alert("该功能仅支持桌面端设备操作");
                         }
                     }}>
@@ -50,7 +54,8 @@ function SetProfile(){
         </Box>
     )
 }
-function ResetPassword(){
+
+function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordAgain, setShowPasswordAgain] = useState(false);
 
@@ -69,25 +74,25 @@ function ResetPassword(){
     };
 
     const navigate = useNavigate()
-    const onClickYes =()=>{
-        if(password === ""){
+    const onClickYes = () => {
+        if (password === "") {
             alert("密码不能为空！");
             return;
         }
-        if(password !== password2){
+        if (password !== password2) {
             alert("两次输入的密码不同！");
             return;
         }
         post("/auth/internal_reset_password", {
             "id": localStorage.getItem("v5_id"),
             "password": password
-        }).then(res=>{
-            if(res.status === 200){
+        }).then(res => {
+            if (res.status === 200) {
                 localStorage.setItem('v5_token', "")
                 localStorage.setItem('v5_id', "")
                 alert("更改成功！请重新登录")
                 navigate("/login/auth");
-            }else {
+            } else {
                 alert("更新失败，请检查网络");
             }
         });
@@ -125,7 +130,9 @@ function ResetPassword(){
                             </IconButton>
                         </InputAdornment>
                     }
-                    onChange={(event)=>{setPassword(event.target.value)}}
+                    onChange={(event) => {
+                        setPassword(event.target.value)
+                    }}
                     label="新密码"
                 />
             </FormControl>
@@ -152,7 +159,9 @@ function ResetPassword(){
                         </InputAdornment>
                     }
                     label="再次输入密码"
-                    onChange={(event)=>{setPassword2(event.target.value)}}
+                    onChange={(event) => {
+                        setPassword2(event.target.value)
+                    }}
                 />
             </FormControl>
             <Button
@@ -167,9 +176,9 @@ function ResetPassword(){
     )
 }
 
-function Logout(){
+function Logout() {
     const navigate = useNavigate()
-    return(
+    return (
         <Box>
             <Typography
                 sx={{
@@ -183,14 +192,14 @@ function Logout(){
             </Typography>
             <Button
                 sx={{
-                    margin:2,
+                    margin: 2,
                     textAlign: "center",
-                    backgroundColor:"#e88b8b"
+                    backgroundColor: "#e88b8b"
                 }}
                 variant="contained"
                 onClick={() => {
-                    localStorage.setItem("v5_id","");
-                    localStorage.setItem("v5_token","");
+                    localStorage.setItem("v5_id", "");
+                    localStorage.setItem("v5_token", "");
                     navigate('/login/auth');
                 }}>
                 退出登录<LogoutIcon/>

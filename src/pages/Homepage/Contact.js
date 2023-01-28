@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    Box, Grid,
-    MenuItem,
-
-    TextField,
-    Typography,
-} from "@mui/material";
+import {Box, Grid, MenuItem, TextField, Typography,} from "@mui/material";
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import ContactRows from "../../components/Homepage/Contact/ContactRows";
 import {useNavigate} from "react-router-dom";
@@ -98,11 +92,11 @@ function Contact() {
                             id="届次筛选"
                             select
                             label="届次筛选"
-                            defaultValue= {localStorage
+                            defaultValue={localStorage
                                 .getItem("v5_contact_session")}
                             size="small"
                             sx={{
-                                margin:2
+                                margin: 2
                             }}
                             onChange={onMethodChanged}
                         >
@@ -122,7 +116,7 @@ function Contact() {
                                 .getItem("v5_contact_college")}
                             size="small"
                             sx={{
-                                margin:2
+                                margin: 2
                             }}
                             onChange={onSchoolChanged}
                         >
@@ -142,7 +136,7 @@ function Contact() {
                                 .getItem("v5_contact_tech")}
                             size="small"
                             sx={{
-                                margin:2
+                                margin: 2
                             }}
                             onChange={onTechGroupChanged}
                         >

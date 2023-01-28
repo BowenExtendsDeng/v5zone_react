@@ -1,7 +1,7 @@
 import {Box, Step, StepLabel, Stepper, Typography} from "@mui/material";
 import React from "react";
 
-export default function MyStepper(props){
+export default function MyStepper(props) {
     const {type, cost, stage} = props;
 
     const aboveHundredSteps = [

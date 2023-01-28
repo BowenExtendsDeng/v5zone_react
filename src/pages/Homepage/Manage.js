@@ -1,12 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
-import {
-    Box,
-    Divider,
-    Grid,
-    Stack,
-    Typography
-} from "@mui/material";
+import {Box, Divider, Grid, Stack, Typography} from "@mui/material";
 import Admission from "../../components/Homepage/Manage/Admission"
 import POI from "../../components/Homepage/Manage/POI"
 import Article from "../../components/Homepage/Manage/Article"
@@ -19,16 +13,16 @@ function Manage() {
     const [isVice, setVice] = useState(false);
 
 
-    function init(){
+    function init() {
         post("/auth/is_monitor", localStorage.getItem("v5_id"))
             .then(res => {
                 setVice(res.data === "VICE_CAPTAIN");
             })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     return (
         <Box>
@@ -48,7 +42,7 @@ function Manage() {
                 <Grid container spacing={2} align={"center"}>
                     <Grid xs={1}></Grid>
                     <Grid xs={10} align={"center"}>
-                        {isVice ?  <Admission/> : <div/>}
+                        {isVice ? <Admission/> : <div/>}
                     </Grid>
                     <Grid xs={1}></Grid>
                     <Grid xs={1}></Grid>
@@ -70,7 +64,7 @@ function Manage() {
                 :
                 <Stack align={"center"}>
                     <Divider/>
-                    {isVice ?  <Admission/> : <div/>}
+                    {isVice ? <Admission/> : <div/>}
                     <Divider/>
                     <Article/>
                     <Divider/>

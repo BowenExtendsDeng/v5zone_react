@@ -46,29 +46,29 @@ function upload(formData) {
         });
 }
 
-function Image(props){
+function Image(props) {
 
     const navigate = useNavigate()
     const {imageUrl, access, title} = props;
     const [isPublic, setIsPublic] = useState(access === true);
 
-    const handleChange = (event) =>{
+    const handleChange = (event) => {
         setIsPublic(event.target.value === "公开上墙")
-        post("/album/set_public",{
+        post("/album/set_public", {
             uploader: localStorage.getItem("v5_id"),
             isPublic: !isPublic,
             resourceLink: title,
         }).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 console.log(res.data);
             }
         })
     }
 
-    const onDelete = () =>{
+    const onDelete = () => {
 
-        post("/album/delete",{
+        post("/album/delete", {
             uploader: localStorage.getItem("v5_id"),
             isPublic: isPublic,
             resourceLink: title,
@@ -79,7 +79,7 @@ function Image(props){
         navigate(0);
     }
 
-    return(
+    return (
         <Card sx={{
             margin: 3,
         }}>
@@ -93,7 +93,7 @@ function Image(props){
             </CardActionArea>
             <CardActions
                 sx={{
-                    margin:1,
+                    margin: 1,
                 }}
             >
                 <TextField
@@ -109,15 +109,15 @@ function Image(props){
                     onChange={handleChange}
                 >
                     {imageType.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
                 </TextField>
                 <Button
                     size="small"
                     variant="contained"
-                    onClick={()=>{
+                    onClick={() => {
                         copy(imageUrl);
                     }}
                 >
@@ -126,7 +126,7 @@ function Image(props){
                 <Button
                     size="small"
                     sx={{
-                        backgroundColor:"#e69191"
+                        backgroundColor: "#e69191"
                     }}
                     variant="contained"
                     onClick={onDelete}
@@ -154,7 +154,7 @@ function MyAlbum() {
     const [methodState, setMethodState] = useState("公开上墙")
     const fileInputChange = (event) => {
         const newFile = event.target.files[0];
-        if(newFile.size >= 1048576 * 10){
+        if (newFile.size >= 1048576 * 10) {
             alert("文件不能大于 10M ");
             return;
         }
@@ -165,14 +165,14 @@ function MyAlbum() {
 
     const [imageList, setImageList] = useState([])
 
-    function init(){
+    function init() {
         post("/album/get_mine",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 const list = res.data.reverse();
                 console.log("test_base_url: " + axios.defaults.baseURL);
-                list.map((item)=>{
+                list.map((item) => {
                     item.title = item.resourceLink;
                     item.resourceLink =
                         axios.defaults.baseURL
@@ -184,9 +184,9 @@ function MyAlbum() {
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     const [open, setOpen] = React.useState(false);
 
@@ -201,7 +201,7 @@ function MyAlbum() {
     const [file, setFile] = useState("null")
 
     function handleApply() {
-        if(file === "none"){
+        if (file === "none") {
             alert("请选择一个文件，再上传！");
             return;
         }
@@ -306,12 +306,12 @@ function MyAlbum() {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{marginRight:3, marginBottom: 3}}>取消</Button>
-                    <Button onClick={handleApply} sx={{marginRight:5, marginBottom: 3}}>上传</Button>
+                    <Button onClick={handleClose} sx={{marginRight: 3, marginBottom: 3}}>取消</Button>
+                    <Button onClick={handleApply} sx={{marginRight: 5, marginBottom: 3}}>上传</Button>
                 </DialogActions>
             </Dialog>
             <Box sx={{height: 50}}/>
-            {isDesktop?
+            {isDesktop ?
                 <Box>
                     <Grid container spacing={2}>
                         {imageList.map((option) => (

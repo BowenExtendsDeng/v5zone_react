@@ -1,15 +1,7 @@
 import {JudgeDevice} from "../../templates/JudgeDevice";
 import React, {useEffect, useState} from "react";
 import {post} from "../../../request";
-import {Box,
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography} from "@mui/material";
+import {Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";

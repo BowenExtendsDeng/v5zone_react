@@ -1,8 +1,8 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {Box, ImageList, ImageListItem, Typography} from "@mui/material";
 import {JudgeDevice} from "../../components/templates/JudgeDevice";
 import {post} from "../../request";
-import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function ColorTabs() {
@@ -11,14 +11,14 @@ export default function ColorTabs() {
 
     const [imageList, setImageList] = useState([])
 
-    function init(){
+    function init() {
         post("/album/get_public",
             localStorage.getItem("v5_id")).then(res => {
             console.log(res);
-            if (res.status === 200){
+            if (res.status === 200) {
                 const list = res.data.reverse();
                 console.log("test_base_url: " + axios.defaults.baseURL);
-                list.map((item)=>{
+                list.map((item) => {
                     item.title = item.resourceLink;
                     item.resourceLink = axios.defaults.baseURL
                         + "/album/download/"
@@ -29,9 +29,9 @@ export default function ColorTabs() {
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
     return (
         <Box>

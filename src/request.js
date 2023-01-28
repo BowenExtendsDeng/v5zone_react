@@ -59,7 +59,7 @@ export function get(url, params = {}) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
             params: params,
-            headers:{
+            headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('v5_token'),
                 "Content-Type": "application/json",
             }
@@ -81,8 +81,8 @@ export function get(url, params = {}) {
  */
 export function post(url, data) {
     return new Promise((resolve, reject) => {
-        axios.post(url, data,{
-            headers:{
+        axios.post(url, data, {
+            headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('v5_token'),
                 "Content-Type": "application/json",
             }
