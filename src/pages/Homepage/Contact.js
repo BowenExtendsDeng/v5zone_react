@@ -86,7 +86,7 @@ function Contact() {
                         }}
                     >组员联系方式</Typography>
                 }
-                <Grid container spacing={1}>
+                <Grid container spacing={1} sx={{textAlign:"center",margin:2}}>
                     <Grid xs={4}>
                         <TextField
                             id="届次筛选"

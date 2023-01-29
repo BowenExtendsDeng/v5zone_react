@@ -175,7 +175,7 @@ function Budget() {
                         defaultValue="支出"
                         size="small"
                         sx={{
-                            margin: 2,
+                            margin: 3,
                             width: 120,
                         }}
                         value={applyType}
@@ -187,6 +187,17 @@ function Budget() {
                             </MenuItem>
                         ))}
                     </TextField>
+                    <Button
+                        sx={{
+                            margin: 3,
+                            fontWeight: "bold",
+                        }}
+                        variant="outlined"
+                        onClick={() => {
+                            navigate("/homepage/md?fileLink=Application.md&darkMode=false");
+                        }}
+                    >申请流程与要求
+                    </Button>
                     <TextField
                         autoFocus
                         margin="dense"
@@ -219,10 +230,10 @@ function Budget() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}
-                            sx={{marginRight: 3, marginBottom: 3}
+                            sx={{marginRight: 3, marginBottom: 3,fontSize: 16}
                             }>取消</Button>
                     <Button onClick={handleApply}
-                            sx={{marginRight: 5, marginBottom: 3}
+                            sx={{marginRight: 5, marginBottom: 3,fontSize: 16}
                             }>确认申请</Button>
                 </DialogActions>
             </Dialog>
@@ -264,7 +275,6 @@ function Budget() {
                 <Grid xs={4}>
                     <Button
                         variant="contained"
-                        sx={{}}
                         onClick={handleClickOpen}
                     >新建申请</Button>
                 </Grid>
