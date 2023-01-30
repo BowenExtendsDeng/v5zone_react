@@ -4,10 +4,9 @@
 import axios from "axios";
 
 axios.defaults.timeout = 100000;
-axios.defaults.baseURL = "https://datasource.npu5v5.cn:8849";
+axios.defaults.baseURL = "https://www.npu5v5.cn:8849";
 
-
-/**
+    /**
  * http request 拦截器
  */
 axios.interceptors.request.use(

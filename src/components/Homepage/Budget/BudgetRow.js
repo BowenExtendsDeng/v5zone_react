@@ -168,12 +168,21 @@ export default function BudgetRow(props) {
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
                     </IconButton>
                 </TableCell>
-                {isDesktop ? <TableCell align="center">{row.id}</TableCell> : <div/>}
+                {isDesktop ?
+                    <TableCell align="center">{row.id}</TableCell>
+                    :
+                    <div/>
+                }
                 <TableCell component="th" scope="row" align="center">
                     {row.intention}
                 </TableCell>
                 <TableCell align="center">{row.type}</TableCell>
                 <TableCell align="center">{row.cost}</TableCell>
+                {isDesktop ?
+                    <TableCell align="center">{row.alipayTele}</TableCell>
+                    :
+                    <div/>
+                }
             </TableRow>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>

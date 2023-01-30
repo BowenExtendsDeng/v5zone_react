@@ -95,6 +95,7 @@ export default function Admission() {
                                 <TableCell align="center">申请人</TableCell>
                                 <TableCell align="center">申请类型</TableCell>
                                 <TableCell align="center">申请金额</TableCell>
+                                <TableCell align="center">支付宝手机号</TableCell>
                                 <TableCell align="center">下载发票</TableCell>
                                 <TableCell align="center">操作</TableCell>
                             </TableRow>
@@ -114,6 +115,7 @@ export default function Admission() {
                                             align="center"
                                         >{row.type}</TableCell>
                                         <TableCell align="center">{row.cost}</TableCell>
+                                        <TableCell align="center">{row.alipayTele}</TableCell>
                                         <TableCell align="center">
                                             <Button
                                                 disabled={row.stage === 1 || !isVice}

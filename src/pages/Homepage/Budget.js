@@ -80,12 +80,12 @@ function Budget() {
         post('/transaction/apply', data).then((res) => {
             if (res.status === 200 && res.data.msg === "success") {
                 alert("申请成功");
+                setOpen(false);
                 navigate(0);
             } else {
                 alert("申请失败，请检查网络状态");
             }
         })
-        setOpen(false);
     };
 
     const isDesktop = JudgeDevice()
@@ -284,10 +284,19 @@ function Budget() {
                     <TableHead>
                         <TableRow>
                             <TableCell/>
-                            {isDesktop ? <TableCell align="center">交易编号</TableCell> : <div/>}
+                            {isDesktop ?
+                                <TableCell align="center">交易编号</TableCell>
+                                :
+                                <div/>
+                            }
                             <TableCell align="center">申请项</TableCell>
                             <TableCell align="center">类型</TableCell>
                             <TableCell align="center">金额</TableCell>
+                            {isDesktop ?
+                                <TableCell align="center">支付宝手机号</TableCell>
+                                :
+                                <div/>
+                            }
                         </TableRow>
                     </TableHead>
                     <TableBody>

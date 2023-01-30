@@ -14,7 +14,7 @@ function Login() {
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundImage: "url('https://tomcat-oss.oss-cn-beijing.aliyuncs.com/login_desktop.jpg')",
+        backgroundImage: "url('https://www.npu5v5.cn:8849/album/download/202030084920230130155640831.jpg')",
     }
 
     const MOBILE_CSS = {
@@ -25,7 +25,7 @@ function Login() {
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundImage: "url('https://tomcat-oss.oss-cn-beijing.aliyuncs.com/login_mobile.jpg')",
+        backgroundImage: "url('https://www.npu5v5.cn:8849/album/download/202030084920230130155651179.jpg')",
     }
 
     return (
