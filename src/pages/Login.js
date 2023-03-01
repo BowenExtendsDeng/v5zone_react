@@ -14,7 +14,7 @@ function Login() {
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundImage: "url('https://www.npu5v5.cn:8849/album/download/202030084920230130155640831.jpg')",
+        backgroundImage: "url('https://www.npu5v5.cn:8849/album/download/back_desktop.jpg')",
     }
 
     const MOBILE_CSS = {
@@ -25,7 +25,7 @@ function Login() {
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundImage: "url('https://www.npu5v5.cn:8849/album/download/202030084920230130155651179.jpg')",
+        backgroundImage: "url('https://www.npu5v5.cn:8849/album/download/back_mobile.jpg')",
     }
 
     return (
