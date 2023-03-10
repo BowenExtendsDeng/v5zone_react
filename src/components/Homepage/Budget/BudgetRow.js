@@ -21,9 +21,9 @@ import {
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MyStepper from "./MyStepper";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import axios from "axios";
+import MyStepper from "./MyStepper";
 import {useNavigate} from "react-router-dom";
 import {post} from "../../../request";
 import {JudgeDevice} from "../../templates/JudgeDevice";
